@@ -1,0 +1,107 @@
+================================================================================
+OFFICIAL FORENSIC EXAMINATION REPORT - SURVEILLANCE EVIDENCE
+Multi-Vendor DVR/NVR Forensic Analysis Tool (SIH 2026 - PS 26150)
+================================================================================
+Generated: 2026-09-17 18:14:58 UTC
+Tool Version: 1.0.0-rc1
+Standard Compliance: ISO/IEC 27037:2012 | Section 65B IEA / Sec 63 BSA
+--------------------------------------------------------------------------------
+
+1. CASE DETAILS
+  Case Identifier   : DEMO-CASE-001
+  Case Title        : Operation IronGate - Surveillance Forensics
+  Lead Examiner     : Insp. Rajesh Kumar (Cyber Cell)
+  Law Agency / Unit : State Police Forensic Science Laboratory
+  Case Status       : IN_PROGRESS
+  Description       : Forensic examination of seized Dahua DVR hard disk associated with security incident.
+
+2. EVIDENCE INVENTORY & SOURCE DUAL HASHING
+  Evidence ID       : EV-001
+  Label / Tag       : Dahua 8-Channel DVR 500GB Seized Hard Disk (Image)
+  Source Path       : C:\Users\karth\.gemini\antigravity\scratch\sih-26150-dvr-forensics\evidence_cases\DEMO-CASE-001\01_original_evidence\EV-001_dahua_dhfs_sample_01.raw
+  Size (Bytes)      : 8,388,624
+  MD5 Hash          : fddeb0dafb8933e275e2a7b456d02369
+  SHA-256 Hash      : 90232605acc0a71daa9381ce4989018d37373ca47fdaeb1d7d86158c73eb6d45
+  Detected OEM      : Dahua Technology (DHFS4)
+  Detection Conf.   : 100.0%
+  Working Copy Hash : 90232605acc0a71daa9381ce4989018d37373ca47fdaeb1d7d86158c73eb6d45
+  ----------------------------------------------------------------------
+
+3. ALLOCATED RECORDINGS EXTRACTED (4 Streams Found)
+  Artifact ID       : ART-CAM-01-20260911
+  Camera / Channel  : CAM-01 (Gate Entrance)
+  Raw Device Clock  : 2026-09-11 09:01:04 -> 2026-09-11 09:01:14
+  Normalized UTC    : 2026-09-11T09:01:04 -> 2026-09-11T09:01:14
+  Duration          : 10.0s | Codec: H.264 | Res: 1920x1080
+  Source Sector     : Sector 100 (10,240 bytes)
+  SHA-256           : 9624e79afe913f21f64e3e6f94fabce4c6b5614085584a95a43cc7f5f161edba
+
+  Artifact ID       : ART-CAM-02-20260911
+  Camera / Channel  : CAM-02 (Corridor Hallway)
+  Raw Device Clock  : 2026-09-11 09:01:11 -> 2026-09-11 09:01:21
+  Normalized UTC    : 2026-09-11T09:01:11 -> 2026-09-11T09:01:21
+  Duration          : 10.0s | Codec: H.264 | Res: 1920x1080
+  Source Sector     : Sector 150 (10,240 bytes)
+  SHA-256           : 6420254f0b29ecd7a38b4429e3f19a4d2ccf1dac2be9fb0ee3824199c4312991
+
+  Artifact ID       : ART-CAM-04-20260911
+  Camera / Channel  : CAM-04 (Parking Lot East)
+  Raw Device Clock  : 2026-09-11 09:01:18 -> 2026-09-11 09:01:28
+  Normalized UTC    : 2026-09-11T09:01:18 -> 2026-09-11T09:01:28
+  Duration          : 10.0s | Codec: H.264 | Res: 1920x1080
+  Source Sector     : Sector 200 (10,240 bytes)
+  SHA-256           : 4d8eb17acdf36e638d0dcd836a2bd54951f70035bcbbe9b9de718fd1ac8af3fb
+
+  Artifact ID       : ART-CAM-05-20260911
+  Camera / Channel  : CAM-05 (Perimeter Exit)
+  Raw Device Clock  : 2026-09-11 09:01:25 -> 2026-09-11 09:01:35
+  Normalized UTC    : 2026-09-11T09:01:25 -> 2026-09-11T09:01:35
+  Duration          : 10.0s | Codec: H.264 | Res: 1920x1080
+  Source Sector     : Sector 250 (10,240 bytes)
+  SHA-256           : 6274f8cd133838e47c45bc1b710a747c41e07f43f70363136caaa2408a348d47
+
+
+4. DELETED FOOTAGE RECOVERY & EXPLANATION (1 Recovered)
+  Artifact ID       : ART-DEL-CAM-03-1789117274
+  Carved Channel    : CAM-03
+  Recovery Status   : CONFIRMED (Confidence: 98.0%)
+  Recovery Method   : DHFS_INDEX_AND_NAL_CARVING
+  Source Sector     : Byte Offset 153,600 (10,240 bytes)
+  Artifact SHA-256  : ff4007dbd3bf53943fd5fc3146a0d8770d92f2be19731867227ecf4c4b61c71a
+  Forensic Rationale: Valid H.264 SPS/PPS headers detected at sector offset. GOP sequence intact with zero dropped IDR slices.
+
+
+5. CROSS-CAMERA INCIDENT NARRATIVE TIMELINE (5 Events)
+  [2026-09-11T14:31:04] CAM-01 - Individual enters premises through main security gate (Ref: ART-CAM-01-20260911)
+  [2026-09-11T14:31:11] CAM-02 - Individual proceeds along ground floor corridor towards secure zone (Ref: ART-CAM-02-20260911)
+  [2026-09-11T14:31:14] CAM-03 - Individual accesses loading bay door [RECOVERED DELETED FOOTAGE] (Ref: ART-CAM-03-20260911)
+  [2026-09-11T14:31:18] CAM-04 - Unregistered vehicle pulls up adjacent to exit perimeter (Ref: ART-CAM-04-20260911)
+  [2026-09-11T14:31:25] CAM-05 - Individual exits facility perimeter and enters vehicle (Ref: ART-CAM-05-20260911)
+
+6. CRYPTOGRAPHIC CHAIN OF CUSTODY AUDIT LEDGER (Status: CHAIN VALID)
+  Seq 000 | 2026-09-17T17:16:52.885108 | Action: EVIDENCE_ACQUIRED | Actor: Insp. Rajesh Kumar (Cyber Cell)
+        Event Hash: abebeb822c68eaa287902761aa4041f34f23cf5b14f0130989f25185449c8aa8
+        Prev  Hash: 0000000000000000000000000000000000000000000000000000000000000000
+  Seq 001 | 2026-09-17T17:16:52.901172 | Action: WORKING_COPY_CREATED | Actor: Insp. Rajesh Kumar (Cyber Cell)
+        Event Hash: 1e2c9478460ea463445aa5601151dfc7c4e3439e290d6bb9da8bde65a5a74e24
+        Prev  Hash: abebeb822c68eaa287902761aa4041f34f23cf5b14f0130989f25185449c8aa8
+  Seq 002 | 2026-09-17T17:16:52.915217 | Action: VENDOR_DETECTION_EXECUTED | Actor: AUTOMATED_SYSTEM
+        Event Hash: ad7e918fd0af6f69a925ff2709c62a33f6216bfa27bc68d51973859b0732b2bb
+        Prev  Hash: 1e2c9478460ea463445aa5601151dfc7c4e3439e290d6bb9da8bde65a5a74e24
+  Seq 003 | 2026-09-17T17:16:52.944859 | Action: PARSER_EXECUTED | Actor: AUTOMATED_SYSTEM
+        Event Hash: 3f01688ef2cc4b9033239f98eb294523afdb2d5b76d1fe9b800f65ea7442b84e
+        Prev  Hash: ad7e918fd0af6f69a925ff2709c62a33f6216bfa27bc68d51973859b0732b2bb
+  Seq 004 | 2026-09-17T17:16:52.971092 | Action: RECOVERY_EXECUTED | Actor: AUTOMATED_SYSTEM
+        Event Hash: 554de4df882c681d8dfb76f1940514bca2063f0693e10876638b64cc1f37e046
+        Prev  Hash: 3f01688ef2cc4b9033239f98eb294523afdb2d5b76d1fe9b800f65ea7442b84e
+  Seq 005 | 2026-09-17T18:14:47.893930 | Action: DELETED_RECOVERY_EXECUTED | Actor: AUTOMATED_SYSTEM
+        Event Hash: e06be8a9f5b5d945eca4b7d304369252d8427108c660d4ba6d8e9a0879762ffb
+        Prev  Hash: 554de4df882c681d8dfb76f1940514bca2063f0693e10876638b64cc1f37e046
+
+================================================================================
+7. FORENSIC CERTIFICATION & INTEGRITY STATEMENT
+I hereby certify that the digital evidence listed above was processed in strict
+accordance with ISO/IEC 27037 guidelines. Original evidence remained write-protected.
+All extractions and carvings were performed on verified working copies.
+AI findings remain strictly analytical assistance and are not primary evidence.
+================================================================================

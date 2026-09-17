@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sih26150-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_URL=sqlite:////app/data/forensics.db
+      - EVIDENCE_STORAGE_PATH=/app/evidence_cases
+      - FIXTURES_PATH=/app/forensic_fixtures
+      - REPORTS_OUTPUT_PATH=/app/reports/generated
+      - BACKEND_HOST=0.0.0.0
+      - BACKEND_PORT=8000
+    volumes:
+      - backend-db:/app/data
+      - ./evidence_cases:/app/evidence_cases
+      - ./forensic_fixtures:/app/forensic_fixtures
+      - ./reports/generated:/app/reports/generated
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sih26150-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend-db:
