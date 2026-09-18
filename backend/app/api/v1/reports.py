@@ -142,17 +142,37 @@ def download_report(case_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Case not found")
 
     reports_dir = settings.REPORTS_OUTPUT_PATH
-    matching = sorted(reports_dir.glob(f"Forensic_Report_{case_id}_*.txt"), key=lambda p: p.stat().st_mtime, reverse=True)
-    if not matching:
-        generate_report(case_id, db)
-        matching = sorted(reports_dir.glob(f"Forensic_Report_{case_id}_*.txt"), key=lambda p: p.stat().st_mtime, reverse=True)
+    # Check for PDF first
+    pdf_matching = sorted(reports_dir.glob(f"Forensic_Report_{case_id}_*.pdf"), key=lambda p: p.stat().st_mtime, reverse=True)
+    if pdf_matching:
+        report_file = pdf_matching[0]
+        return FileResponse(
+            path=str(report_file),
+            filename=report_file.name,
+            media_type="application/pdf",
+        )
 
-    if not matching:
+    # Fallback to generating report if none exists
+    txt_matching = sorted(reports_dir.glob(f"Forensic_Report_{case_id}_*.txt"), key=lambda p: p.stat().st_mtime, reverse=True)
+    if not txt_matching:
+        generate_report(case_id, db)
+        pdf_matching = sorted(reports_dir.glob(f"Forensic_Report_{case_id}_*.pdf"), key=lambda p: p.stat().st_mtime, reverse=True)
+        if pdf_matching:
+            report_file = pdf_matching[0]
+            return FileResponse(
+                path=str(report_file),
+                filename=report_file.name,
+                media_type="application/pdf",
+            )
+        txt_matching = sorted(reports_dir.glob(f"Forensic_Report_{case_id}_*.txt"), key=lambda p: p.stat().st_mtime, reverse=True)
+
+    if not txt_matching:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No report found for case")
 
-    report_file = matching[0]
+    report_file = txt_matching[0]
     return FileResponse(
         path=str(report_file),
         filename=report_file.name,
         media_type="text/plain; charset=utf-8",
     )
+

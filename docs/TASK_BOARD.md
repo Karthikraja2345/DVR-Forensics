@@ -4,7 +4,7 @@
 
 ---
 
-## 1. Sprint Task Board
+## 1. Phase 1 Sprint Task Board (Completed)
 
 | Task ID | Task Description | Owner | Priority | Status | Dependency | Acceptance Criteria |
 | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
@@ -34,7 +34,23 @@
 
 ---
 
-## 2. 15-Day Milestone Roadmap
+## 2. Phase 2 Sprint Task Board (Completed)
+
+| Task ID | Task Description | Owner | Priority | Status | Dependency | Acceptance Criteria |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| **M1-007** | E01/L01 Forensic Container Header Scanner | Member 1 | P0 | **DONE** | M1-004 | Detects Expert Witness format (`EVF`/`LVF`) and RAW flat dumps |
+| **M1-008** | MBR & GPT Disk Partition Geometry Analyzer| Member 1 | P0 | **DONE** | M1-007 | Parses MBR boot signature, 4 partition table entries, and GPT headers |
+| **M2-008** | Hikvision HKMB / HIK Container Parser | Member 2 | P0 | **DONE** | M2-003 | Extracts active channels from Hikvision proprietary disk layouts |
+| **M2-009** | Hikvision Unallocated Stream Carving Engine| Member 2 | P0 | **DONE** | M2-008 | Carves deleted keyframe sequences with `CONFIRMED` validation |
+| **M2-010** | Sub-Second Dynamic Linear Drift Compensator | Member 2 | P0 | **DONE** | M2-006 | Hourly drift rate calculation and dynamic timestamp curve correction |
+| **M2-011** | Synthetic Hikvision Raw Disk Fixture (4MB)| Member 2 | P1 | **DONE** | M2-008 | `generate_hikvision_fixture.py` creates HKMB sample fixture |
+| **M3-011** | Court-Ready Binary PDF Engine (ReportLab) | Member 3 | P0 | **DONE** | M3-008 | Produces ISO/IEC 27037 & Sec 65B/63 styled binary PDF reports |
+| **M3-012** | Interactive Playback Controls & Scrubber | Member 3 | P1 | **DONE** | M3-004 | Replay slider, Play/Pause, 0.5x-4.0x speed, frame stepping |
+| **M3-013** | AI Motion Bounding Box Legal Overlay | Member 3 | P1 | **DONE** | M3-007 | Toggleable bounding box HUD with `NOT PRIMARY EVIDENCE` watermark |
+
+---
+
+## 3. 15-Day Milestone Roadmap
 
 * **Day 1: Repository Foundation, Contracts & Schemas**
   - Initialize project layout, Git rules, docker orchestration, documentation, Pydantic schemas, and DB models.
@@ -47,11 +63,11 @@
 * **Day 5: Validated Parser #2 (CP Plus Compatible)**
   - Verify CP Plus OEM variants against shared DHFS structures; establish test fixture parity.
 * **Day 6: Parser #3 (Hikvision Profile Ready) & Carving Core**
-  - Implement Hikvision profile contracts and raw H.264 byte scanner.
+  - Implement Hikvision profile contracts, HKMB superblock detection, and carving engine.
 * **Day 7: Controlled Deleted Video Recovery**
   - Build NAL unit assembly, GOP reconstruction, and explainable confidence scoring.
 * **Day 8: Metadata Extraction & Timestamp Normalization**
-  - Implement dual-timestamp engine (raw vs normalized UTC) with timezone and drift compensation.
+  - Implement dual-timestamp engine (raw vs normalized UTC) with sub-second drift curve compensation.
 * **Day 9: Cross-Camera Incident Narrative**
   - Multi-camera chronological event sorter and incident path reconstruction.
 * **Day 10: Isolated AI Motion Analytics**
@@ -61,7 +77,7 @@
 * **Day 12: Forensic Validation Framework**
   - Automated validation benchmarks testing repeatability, accuracy, and recovery ground truth.
 * **Day 13: Full Frontend Dashboard & OEM Coverage Matrix**
-  - Forensic Replay viewer, Evidence Lineage DAG, and transparent 8-OEM matrix.
+  - Forensic Replay viewer with AI overlays, Evidence Lineage DAG, and transparent 8-OEM matrix.
 * **Day 14: Demonstration Rehearsal, PPT & Judge Q&A Defense**
   - 3-minute scripted offline demonstration run-through and edge-case verification.
 * **Day 15: Code Freeze, Documentation Seal & Backup**

@@ -6,6 +6,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0-rc2] - Phase 2 Core Forensic Engineering (2026-09-18)
+
+### Added
+- **Member 1 (Forensics Core & Disk Geometry)**:
+  - Forensic container detection in `VendorDetector.detect_container()` supporting E01 (Expert Witness / EVF), L01 (Logical Evidence File), RAW/DD, and AFF4.
+  - Partition geometry inspection in `VendorDetector.inspect_geometry()`: parses MBR sector boot signature (`0x55AA`), the 4 MBR partition table entries, and GPT (`EFI PART`) headers.
+  - Comprehensive container and partition geometry unit tests (`tests/unit/test_containers.py`).
+- **Member 2 (Parsers, Recovery & Timeline Drift)**:
+  - Upgraded `HikvisionParser` (`backend/app/parsers/profiles/hikvision.py`) with HKMB / HIK superblock detection, active index allocation parsing, and unallocated cluster deleted stream carving.
+  - Sub-second dynamic drift curve compensation in `TimestampNormalizer`: `calculate_drift_rate_per_hour()` and `normalize_with_drift_curve()`.
+  - Synthetic 4 MB Hikvision HKMB raw disk image generator (`scripts/generate_hikvision_fixture.py`).
+  - Unit tests for Hikvision extraction, carving, and drift curve compensation.
+- **Member 3 (Platform, UI & Forensic Reporting)**:
+  - Integrated `ReportLab` into `ForensicReportGenerator` producing styled, ISO/IEC 27037 and Section 65B/63 compliant binary PDF documents with dual-hash verification tables, audit trails, and legal certification blocks.
+  - Prioritized binary PDF serving in `GET /api/v1/cases/{case_id}/report/download`.
+  - Upgraded React `VideoReplayer`: added timeline scrubber, interactive playback controls (Play/Pause, speed presets: 0.5x - 4x, frame stepping), and toggleable AI Motion Bounding Box overlay with strict "NOT PRIMARY EVIDENCE" advisory watermarks.
+  - Expanded test suite to 24 passing unit and integration tests.
+
+---
+
 ## [1.0.0-rc1] - 2026-09-17
 
 ### Added
