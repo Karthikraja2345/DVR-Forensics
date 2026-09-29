@@ -50,7 +50,21 @@
 
 ---
 
-## 3. 15-Day Milestone Roadmap
+## 3. Phase 3 Sprint Task Board (Completed)
+
+| Task ID | Task Description | Owner | Priority | Status | Dependency | Acceptance Criteria |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| **M1-014** | Write-Blocker Verification Engine | Member 1 | P0 | **DONE** | M1-003 | Verifies hardware/OS write protection; generates ISO/IEC 27037 certificates |
+| **M1-015** | Evidence Lineage DAG Multi-Format Exporter| Member 1 | P1 | **DONE** | M3-006 | Exports case lineage graph in JSON, Mermaid, and Graphviz DOT formats |
+| **M2-012** | Forensic Damaged Video Stream Repairer | Member 2 | P0 | **DONE** | M2-004 | Detects missing SPS/PPS and injects valid parameters without mutating raw footage |
+| **M2-013** | Complete 10-Benchmark Validation Suite | Member 2 | P0 | **DONE** | M3-010 | All 10 ground truth benchmarks executed with 100% automated pass rate |
+| **M3-014** | REST Endpoints for Repair & DAG Export | Member 3 | P0 | **DONE** | M2-012 | `POST /recovery/{id}/repair` and `GET /lineage/{id}/export` routes active |
+| **M3-015** | Stream Repair & DAG Export UI Integration | Member 3 | P1 | **DONE** | M3-014 | Recovery Workspace repair trigger & Lineage DAG export modal active |
+| **M3-016** | 10-Benchmark Live Validation Dashboard | Member 3 | P0 | **DONE** | M2-013 | `POST /validation/run` delivers full 10 metrics with 100% pass status |
+
+---
+
+## 4. 15-Day Milestone Roadmap
 
 * **Day 1: Repository Foundation, Contracts & Schemas**
   - Initialize project layout, Git rules, docker orchestration, documentation, Pydantic schemas, and DB models.
@@ -75,9 +89,9 @@
 * **Day 11: Cryptographic Chain of Custody & PDF Report Engine**
   - Hash-chained audit logging, tamper detection, and ReportLab court report generation.
 * **Day 12: Forensic Validation Framework**
-  - Automated validation benchmarks testing repeatability, accuracy, and recovery ground truth.
+  - Automated validation benchmarks testing repeatability, accuracy, and recovery ground truth across all 10 areas.
 * **Day 13: Full Frontend Dashboard & OEM Coverage Matrix**
-  - Forensic Replay viewer with AI overlays, Evidence Lineage DAG, and transparent 8-OEM matrix.
+  - Forensic Replay viewer with AI overlays, Evidence Lineage DAG exporter, and transparent 8-OEM matrix.
 * **Day 14: Demonstration Rehearsal, PPT & Judge Q&A Defense**
   - 3-minute scripted offline demonstration run-through and edge-case verification.
 * **Day 15: Code Freeze, Documentation Seal & Backup**

@@ -13,6 +13,8 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
   const [evidence, setEvidence] = useState<Evidence[]>([]);
   const [loading, setLoading] = useState(true);
   const [carving, setCarving] = useState(false);
+  const [repairingId, setRepairingId] = useState<string | null>(null);
+  const [repairNotes, setRepairNotes] = useState<Record<string, string>>({});
 
   useEffect(() => {
     async function loadData() {
@@ -47,6 +49,22 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
     }
   };
 
+  const handleRepair = async (artId: string) => {
+    setRepairingId(artId);
+    try {
+      const res = await api.repairStream(artId);
+      setRepairNotes((prev) => ({
+        ...prev,
+        [artId]: `Repaired: ${res.repair_actions.join(', ')}`,
+      }));
+      alert(`Stream Repair Successful!\n\nActions:\n- ${res.repair_actions.join('\n- ')}\n\nRepaired SHA-256: ${res.repaired_sha256}`);
+    } catch (e: any) {
+      alert(`Repair failed: ${e.message}`);
+    } finally {
+      setRepairingId(null);
+    }
+  };
+
   if (loading) {
     return <div style={{ color: 'var(--text-muted)' }}>Scanning unallocated clusters...</div>;
   }
@@ -57,7 +75,7 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
         <div>
           <h1 className="page-title">Deleted Video Recovery Workspace</h1>
           <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-            Filesystem-aware index traversal and raw H.264/H.265 NAL unit carving with explainable confidence scoring.
+            Filesystem-aware index traversal, raw H.264/H.265 NAL unit carving, and damaged GOP parameter injection.
           </p>
         </div>
         <button
@@ -75,8 +93,9 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
             <th>Artifact ID & Channel</th>
             <th>Recovery Status</th>
             <th>Physical Sector Offset</th>
-            <th>Confidence & Explanation</th>
+            <th>Confidence & Diagnostics</th>
             <th>Hashes</th>
+            <th>Forensic Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -87,6 +106,11 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
                 <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
                   Channel: {art.channel_id || 'CARVED'} • Method: {art.recovery_method}
                 </div>
+                {repairNotes[art.artifact_id] && (
+                  <div style={{ fontSize: '10px', color: 'var(--accent-green)', marginTop: '4px' }}>
+                    ✓ {repairNotes[art.artifact_id]}
+                  </div>
+                )}
               </td>
               <td>
                 <StatusBadge status={art.recovery_status} />
@@ -94,7 +118,7 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
               <td className="mono" style={{ fontSize: '12px' }}>
                 Offset 0x{art.source_byte_offset.toString(16).toUpperCase()} ({art.source_byte_length.toLocaleString()} B)
               </td>
-              <td style={{ maxWidth: '300px' }}>
+              <td style={{ maxWidth: '280px' }}>
                 <div style={{ fontWeight: 600, color: 'var(--accent-green)', fontSize: '12px' }}>
                   {Math.round(art.confidence_score * 100)}% Structural Confidence
                 </div>
@@ -104,6 +128,16 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
               </td>
               <td>
                 <HashViewer md5={art.md5} sha256={art.sha256} />
+              </td>
+              <td>
+                <button
+                  className="btn-secondary"
+                  style={{ fontSize: '11px', padding: '6px 10px', whiteSpace: 'nowrap' }}
+                  onClick={() => handleRepair(art.artifact_id)}
+                  disabled={repairingId === art.artifact_id}
+                >
+                  {repairingId === art.artifact_id ? 'Repairing...' : '🔧 Repair Stream'}
+                </button>
               </td>
             </tr>
           ))}

@@ -124,6 +124,22 @@ export const api = {
     return res.json();
   },
 
+  // Stream Repair
+  async repairStream(artifactId: string) {
+    const res = await fetch(`${API_BASE}/recovery/${artifactId}/repair`, {
+      method: 'POST',
+    });
+    if (!res.ok) throw new Error('Failed to repair stream');
+    return res.json();
+  },
+
+  // Lineage Export
+  async exportLineage(caseId: string, format: string = 'mermaid'): Promise<string> {
+    const res = await fetch(`${API_BASE}/cases/${caseId}/lineage/export?format=${format}`);
+    if (!res.ok) throw new Error('Failed to export lineage graph');
+    return res.text();
+  },
+
   // Reports
   async generateReport(caseId: string) {
     const res = await fetch(`${API_BASE}/cases/${caseId}/report`, {

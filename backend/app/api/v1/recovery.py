@@ -103,6 +103,69 @@ def trigger_deleted_recovery(evidence_id: str, db: Session = Depends(get_db)):
     )
 
 
+from app.forensic.repair.stream_repair import StreamRepairEngine
+from app.forensic.lineage.graph import LineageGraphManager
+
+
 @router.get("/evidence/{evidence_id}/recovery", response_model=List[RecoveredArtifactResponse])
 def list_recovered_artifacts(evidence_id: str, db: Session = Depends(get_db)):
     return db.query(RecoveredArtifact).filter(RecoveredArtifact.evidence_id == evidence_id).all()
+
+
+@router.post("/recovery/{artifact_id}/repair")
+def repair_recovered_stream(artifact_id: str, db: Session = Depends(get_db)):
+    """
+    Executes forensic stream repair on a carved video artifact.
+    Injects valid SPS/PPS headers and resolves broken GOPs without mutating raw evidence.
+    """
+    artifact = db.query(RecoveredArtifact).filter(
+        (RecoveredArtifact.artifact_id == artifact_id) | (RecoveredArtifact.id == artifact_id)
+    ).first()
+    if not artifact:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Artifact not found")
+
+    in_path = Path(artifact.file_path)
+    if not in_path.is_file():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Source stream file not found on disk: {artifact.file_path}")
+
+    evidence = db.query(Evidence).filter(Evidence.id == artifact.evidence_id).first()
+    case_id = evidence.case_id if evidence else "CASE-UNKNOWN"
+
+    out_dir = in_path.parent / "repaired"
+    out_path = out_dir / f"REPAIRED_{in_path.name}"
+
+    repair_result = StreamRepairEngine.repair_stream(in_path, out_path, channel_id=artifact.channel_id or "CARVED")
+
+    # Add Lineage node & edge
+    repaired_node_id = f"NODE-REPAIR-{artifact.artifact_id}"
+    LineageGraphManager.add_node(
+        db=db,
+        node_id=repaired_node_id,
+        case_id=case_id,
+        node_type="REPAIRED_WORKING_COPY",
+        label=f"Repaired Stream ({artifact.channel_id or 'Carved'})",
+        sha256=repair_result["repaired_sha256"],
+        actor="FORENSIC_STREAM_REPAIRER",
+        metadata={"repair_actions": repair_result["repair_actions"], "is_playable": True},
+    )
+    LineageGraphManager.add_edge(
+        db=db,
+        source_id=f"NODE-REC-{artifact.artifact_id}",
+        target_id=repaired_node_id,
+        case_id=case_id,
+        transformation_type="SPS_PPS_PARAMETER_INJECTION",
+    )
+
+    # Log in Chain of Custody
+    ChainOfCustodyManager.log_event(
+        db=db,
+        case_id=case_id,
+        evidence_id=artifact.evidence_id,
+        action="STREAM_REPAIRED_DERIVED_COPY",
+        actor="FORENSIC_STREAM_REPAIRER",
+        source_hash=repair_result["original_sha256"],
+        destination_hash=repair_result["repaired_sha256"],
+        notes=f"Repaired {artifact.artifact_id}: {'; '.join(repair_result['repair_actions'])}",
+    )
+
+    return repair_result

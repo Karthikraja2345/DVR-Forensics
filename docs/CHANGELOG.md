@@ -6,6 +6,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0-rc3] - Phase 3 Advanced Forensic Engines & Complete Validation Suite (2026-09-29)
+
+### Added
+- **Member 1 (Forensics Core & Hardware Integrity)**:
+  - Created `WriteBlockerVerifier` (`backend/app/forensic/acquisition/write_blocker.py`) conducting deterministic write-rejection tests, filesystem permission checks, and issuing cryptographically signed `WriteBlockComplianceCert` reports under ISO/IEC 27037 Clause 6.2.
+  - Built `LineageGraphExporter` (`backend/app/forensic/lineage/exporter.py`) exporting Evidence Lineage DAGs into structured JSON audit files, Mermaid `graph LR` syntax, and Graphviz DOT formats with cycle-free acyclic topological verification.
+  - Added unit test suites `tests/unit/test_write_blocker.py` and `tests/unit/test_lineage_export.py`.
+- **Member 2 (Parsers, Recovery, Repair & Timeline)**:
+  - Built `StreamRepairEngine` (`backend/app/forensic/repair/stream_repair.py`) parsing H.264 NAL streams, detecting missing or truncated SPS (0x67) / PPS (0x68) parameter sets, injecting synthesized headers, standardizing start-codes to 4-byte prefixes, and generating playable working copies without mutating raw carved bytes.
+  - Expanded `scripts/run_validation.py` to all **10 Key Forensic Validation Benchmarks** (Source Repeatability, Multi-Signal Vendor Detection, Stream Extraction, Deleted Carving, Drift Compensation, Cross-Camera Sequence, NAL Cadence, AI Zero-Mutation, Custody Tamper Detection, Throughput Rate) achieving 100% automated pass rate.
+  - Added unit test suite `tests/unit/test_stream_repair.py`.
+- **Member 3 (Platform API, Validation Dashboard & UI Integration)**:
+  - Added REST endpoint `POST /api/v1/recovery/{artifact_id}/repair` with lineage DAG edge linking (`SPS_PPS_PARAMETER_INJECTION`) and custody logging (`STREAM_REPAIRED_DERIVED_COPY`).
+  - Added REST endpoint `GET /api/v1/cases/{case_id}/lineage/export` supporting JSON, Mermaid, and DOT exhibits.
+  - Expanded validation router to deliver all 10 benchmarks and updated the 8-OEM coverage matrix with Hikvision cluster carving active.
+  - Upgraded frontend components: added "Repair Stream" button in `RecoveryWorkspacePage` and "Export Mermaid / JSON DAG" modal in `LineagePage`.
+  - Expanded test suite to 33 passing unit and integration tests.
+
+---
+
 ## [1.1.0-rc2] - Phase 2 Core Forensic Engineering (2026-09-18)
 
 ### Added

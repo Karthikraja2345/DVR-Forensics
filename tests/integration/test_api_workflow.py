@@ -64,3 +64,23 @@ def test_oem_matrix(client):
     data = res.json()
     assert data["total_oems"] == 8
     assert data["validated_count"] >= 2
+
+
+def test_lineage_export_endpoint(client):
+    res_json = client.get("/api/v1/cases/DEMO-CASE-001/lineage/export?format=json")
+    assert res_json.status_code == 200
+    assert "forensic_provenance_schema_version" in res_json.text
+
+    res_mmd = client.get("/api/v1/cases/DEMO-CASE-001/lineage/export?format=mermaid")
+    assert res_mmd.status_code == 200
+    assert "graph LR" in res_mmd.text
+
+
+def test_validation_run_10_benchmarks(client):
+    res = client.post("/api/v1/validation/run")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["total_benchmarks"] == 10
+    assert data["passed_benchmarks"] == 10
+    assert data["success_rate_percent"] == 100.0
+
