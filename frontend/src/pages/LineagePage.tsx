@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FileCode, Download, Link2, Zap, ShieldCheck, Scale } from 'lucide-react';
 import { api } from '../services/api';
 import { LineageGraph as ILineageGraph } from '../types';
 import { LineageGraph } from '../components/LineageGraph';
@@ -68,7 +69,8 @@ export const LineagePage: React.FC<Props> = ({ caseId }) => {
             disabled={exporting}
             style={{ fontSize: '12px', padding: '8px 14px' }}
           >
-            📋 Export Mermaid DAG
+            <FileCode size={14} />
+            <span>Export Mermaid DAG</span>
           </button>
           <button
             className="btn-primary"
@@ -76,7 +78,8 @@ export const LineagePage: React.FC<Props> = ({ caseId }) => {
             disabled={exporting}
             style={{ fontSize: '12px', padding: '8px 14px' }}
           >
-            📥 Export JSON DAG
+            <Download size={14} />
+            <span>Export JSON DAG</span>
           </button>
         </div>
       </div>
@@ -87,7 +90,7 @@ export const LineagePage: React.FC<Props> = ({ caseId }) => {
           title="Lineage Nodes"
           value={graph.total_nodes}
           subtitle="Discrete evidence states"
-          icon="🔗"
+          icon={<Link2 size={20} />}
           trend="Tracked"
           trendPositive={true}
         />
@@ -95,7 +98,7 @@ export const LineagePage: React.FC<Props> = ({ caseId }) => {
           title="Transformations"
           value={graph.total_edges}
           subtitle="Deterministic edges"
-          icon="⚡"
+          icon={<Zap size={20} />}
           trend="Acyclic"
           trendPositive={true}
         />
@@ -103,7 +106,7 @@ export const LineagePage: React.FC<Props> = ({ caseId }) => {
           title="Graph Topology"
           value="DAG Valid"
           subtitle="Zero cyclic mutations"
-          icon="🛡️"
+          icon={<ShieldCheck size={20} />}
           trend="100% Strict"
           trendPositive={true}
           highlightColor="var(--accent-green)"
@@ -112,7 +115,7 @@ export const LineagePage: React.FC<Props> = ({ caseId }) => {
           title="Court Admissibility"
           value="Sec 65B"
           subtitle="Indian Evidence Act compliance"
-          icon="⚖️"
+          icon={<Scale size={20} />}
           trend="Admissible"
           trendPositive={true}
         />

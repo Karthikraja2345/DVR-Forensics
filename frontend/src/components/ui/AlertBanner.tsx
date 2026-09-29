@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ShieldCheck, CheckCircle2, AlertTriangle, AlertCircle, X } from 'lucide-react';
 
 interface Props {
   type?: 'info' | 'success' | 'warning' | 'danger';
@@ -25,27 +26,27 @@ export const AlertBanner: React.FC<Props> = ({
 
   const colorMap = {
     info: {
-      bg: 'rgba(40, 75, 99, 0.22)',
-      border: 'var(--palette-yale-blue)',
-      icon: '🛡️',
-      accent: 'var(--accent-teal-bright)',
+      bg: 'rgba(218, 224, 242, 0.4)',
+      border: '#c7d2fe',
+      icon: <ShieldCheck size={18} color="var(--palette-deep-purple)" />,
+      accent: 'var(--palette-deep-purple)',
     },
     success: {
-      bg: 'rgba(16, 185, 129, 0.12)',
-      border: 'rgba(16, 185, 129, 0.35)',
-      icon: '✓',
+      bg: 'var(--accent-green-bg)',
+      border: '#bbf7d0',
+      icon: <CheckCircle2 size={18} color="var(--accent-green)" />,
       accent: 'var(--accent-green)',
     },
     warning: {
-      bg: 'rgba(245, 158, 11, 0.12)',
-      border: 'rgba(245, 158, 11, 0.35)',
-      icon: '⚠️',
+      bg: 'var(--accent-amber-bg)',
+      border: '#fde68a',
+      icon: <AlertTriangle size={18} color="var(--accent-amber)" />,
       accent: 'var(--accent-amber)',
     },
     danger: {
-      bg: 'rgba(244, 63, 94, 0.12)',
-      border: 'rgba(244, 63, 94, 0.35)',
-      icon: '⛔',
+      bg: 'var(--accent-rose-bg)',
+      border: '#fecdd3',
+      icon: <AlertCircle size={18} color="var(--accent-rose)" />,
       accent: 'var(--accent-rose)',
     },
   }[type];
@@ -62,16 +63,14 @@ export const AlertBanner: React.FC<Props> = ({
         justifyContent: 'space-between',
         gap: '14px',
         marginBottom: '16px',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        boxShadow: 'var(--shadow-card)',
+        boxShadow: 'var(--shadow-sm)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
-        <span style={{ fontSize: '18px' }}>{colorMap.icon}</span>
+        <span style={{ display: 'flex', alignItems: 'center' }}>{colorMap.icon}</span>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontWeight: 600, color: 'var(--palette-white)', fontSize: '13px' }}>
+            <span style={{ fontWeight: 600, color: 'var(--palette-deep-navy)', fontSize: '13px' }}>
               {title}
             </span>
             {badge && (
@@ -81,9 +80,9 @@ export const AlertBanner: React.FC<Props> = ({
                   fontWeight: 700,
                   padding: '1px 6px',
                   borderRadius: 'var(--radius-xs)',
-                  backgroundColor: 'rgba(60, 110, 113, 0.3)',
-                  border: '1px solid var(--palette-stormy-teal)',
-                  color: 'var(--palette-white)',
+                  backgroundColor: '#FFFFFF',
+                  border: `1px solid ${colorMap.border}`,
+                  color: colorMap.accent,
                   letterSpacing: '0.04em',
                 }}
               >
@@ -91,7 +90,7 @@ export const AlertBanner: React.FC<Props> = ({
               </span>
             )}
           </div>
-          <div style={{ fontSize: '12px', color: 'var(--palette-dust-grey)', marginTop: '2px' }}>
+          <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
             {message}
           </div>
         </div>
@@ -105,10 +104,10 @@ export const AlertBanner: React.FC<Props> = ({
               padding: '6px 12px',
               fontSize: '11px',
               fontWeight: 600,
-              backgroundColor: 'var(--palette-stormy-teal)',
-              color: 'var(--palette-white)',
+              backgroundColor: 'var(--palette-deep-purple)',
+              color: '#FFFFFF',
               borderRadius: 'var(--radius-sm)',
-              boxShadow: '0 2px 8px rgba(60, 110, 113, 0.3)',
+              boxShadow: '0 1px 3px rgba(82, 21, 78, 0.2)',
             }}
           >
             {actionText}
@@ -121,15 +120,18 @@ export const AlertBanner: React.FC<Props> = ({
               background: 'none',
               border: 'none',
               color: 'var(--text-muted)',
-              fontSize: '15px',
+              cursor: 'pointer',
               padding: '4px',
-              lineHeight: 1,
+              display: 'flex',
+              alignItems: 'center',
             }}
+            title="Dismiss banner"
           >
-            ✕
+            <X size={15} />
           </button>
         )}
       </div>
     </div>
   );
 };
+

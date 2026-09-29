@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { CheckCircle2, Ruler, ClipboardList, Scale } from 'lucide-react';
 import { api } from '../services/api';
 import { OEMMatrixItem } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
@@ -68,7 +69,7 @@ export const OEMMatrixPage: React.FC = () => {
           title="Empirically Validated"
           value={validatedCount}
           subtitle="Hikvision & Dahua"
-          icon="✓"
+          icon={<CheckCircle2 size={20} />}
           trend="Ground Truth OK"
           trendPositive={true}
           highlightColor="var(--accent-green)"
@@ -77,7 +78,7 @@ export const OEMMatrixPage: React.FC = () => {
           title="Profile Spec Ready"
           value={profileReadyCount}
           subtitle="CP Plus & Uniview"
-          icon="📐"
+          icon={<Ruler size={20} />}
           trend="Parser Spec"
           trendPositive={true}
           highlightColor="var(--accent-amber)"
@@ -86,7 +87,7 @@ export const OEMMatrixPage: React.FC = () => {
           title="Planned Adapters"
           value={plannedCount}
           subtitle="Hanwha, Bosch, Axis, Honeywell"
-          icon="📋"
+          icon={<ClipboardList size={20} />}
           trend="In Roadmap"
           trendPositive={true}
         />
@@ -94,7 +95,7 @@ export const OEMMatrixPage: React.FC = () => {
           title="Non-Fabrication"
           value="100%"
           subtitle="Zero unverified claims"
-          icon="⚖️"
+          icon={<Scale size={20} />}
           progressPercent={100}
         />
       </div>
@@ -121,20 +122,20 @@ export const OEMMatrixPage: React.FC = () => {
           {filteredMatrix.map((item) => (
             <tr key={item.oem}>
               <td>
-                <div style={{ fontWeight: 600, color: 'var(--palette-white)', fontSize: '13px' }}>
+                <div style={{ fontWeight: 600, color: 'var(--palette-deep-navy)', fontSize: '13px' }}>
                   {item.oem}
                 </div>
                 <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
                   Surveillance DVR/NVR Series
                 </div>
               </td>
-              <td style={{ fontSize: '12px', color: 'var(--palette-dust-grey)' }}>
+              <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                 {item.detection}
               </td>
-              <td style={{ fontSize: '12px', color: 'var(--palette-dust-grey)' }}>
+              <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                 {item.parser_status}
               </td>
-              <td style={{ fontSize: '12px', color: 'var(--palette-dust-grey)' }}>
+              <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                 {item.recovery_status}
               </td>
               <td>
@@ -142,11 +143,12 @@ export const OEMMatrixPage: React.FC = () => {
                   className="mono"
                   style={{
                     fontSize: '11px',
-                    color: item.fixture_reference ? 'var(--accent-teal-bright)' : 'var(--text-muted)',
-                    backgroundColor: item.fixture_reference ? 'rgba(60, 110, 113, 0.2)' : 'transparent',
-                    padding: item.fixture_reference ? '2px 6px' : '0',
+                    color: item.fixture_reference ? 'var(--palette-deep-purple)' : 'var(--text-muted)',
+                    backgroundColor: item.fixture_reference ? 'var(--palette-lavender)' : 'transparent',
+                    padding: item.fixture_reference ? '2px 8px' : '0',
                     borderRadius: 'var(--radius-xs)',
-                    border: item.fixture_reference ? '1px solid var(--palette-stormy-teal)' : 'none',
+                    border: item.fixture_reference ? '1px solid rgba(82, 21, 78, 0.15)' : 'none',
+                    fontWeight: item.fixture_reference ? 600 : 400,
                   }}
                 >
                   {item.fixture_reference || 'N/A (Adapter Spec)'}

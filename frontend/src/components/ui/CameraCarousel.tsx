@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { Video, Film, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Recording, RecoveredArtifact } from '../../types';
 
 interface Props {
@@ -41,30 +42,34 @@ export const CameraCarousel: React.FC<Props> = ({ recordings, recovered, onSelec
   };
 
   return (
-    <div style={{ position: 'relative', margin: '16px 0 24px 0' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+    <div style={{ position: 'relative', margin: '20px 0 28px 0' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
         <div>
-          <h2 style={{ fontSize: '15px', color: 'var(--palette-white)', fontWeight: 600 }}>
+          <h2 style={{ fontSize: '15px', color: 'var(--palette-deep-navy)', fontWeight: 600 }}>
             Surveillance Stream Carousel
           </h2>
           <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
             Active channel feeds and carved unallocated footage ready for forensic playback.
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '6px' }}>
+        <div style={{ display: 'flex', gap: '8px' }}>
           <button
             onClick={() => scroll('left')}
             className="btn-secondary"
             style={{ padding: '6px 12px', fontSize: '12px', borderRadius: 'var(--radius-sm)' }}
+            title="Scroll left"
           >
-            ← Prev
+            <ChevronLeft size={16} />
+            <span>Prev</span>
           </button>
           <button
             onClick={() => scroll('right')}
             className="btn-secondary"
             style={{ padding: '6px 12px', fontSize: '12px', borderRadius: 'var(--radius-sm)' }}
+            title="Scroll right"
           >
-            Next →
+            <span>Next</span>
+            <ChevronRight size={16} />
           </button>
         </div>
       </div>
@@ -86,26 +91,26 @@ export const CameraCarousel: React.FC<Props> = ({ recordings, recovered, onSelec
             style={{
               minWidth: '280px',
               maxWidth: '280px',
-              backgroundColor: 'var(--bg-card)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              border: `1px solid ${s.isRecovered ? 'rgba(245, 158, 11, 0.4)' : 'var(--border-color)'}`,
+              backgroundColor: '#FFFFFF',
+              border: `1px solid ${s.isRecovered ? '#fde68a' : 'var(--border-color)'}`,
               borderRadius: 'var(--radius-md)',
-              padding: '14px 16px',
+              padding: '16px',
               scrollSnapAlign: 'start',
               boxShadow: 'var(--shadow-card)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              transition: 'transform 0.2s ease, border-color 0.2s ease',
+              transition: 'transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.borderColor = s.isRecovered ? 'var(--accent-amber)' : 'var(--palette-stormy-teal)';
+              e.currentTarget.style.borderColor = s.isRecovered ? 'var(--accent-amber)' : 'var(--palette-deep-purple)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-card-hover)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.borderColor = s.isRecovered ? 'rgba(245, 158, 11, 0.4)' : 'var(--border-color)';
+              e.currentTarget.style.borderColor = s.isRecovered ? '#fde68a' : 'var(--border-color)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-card)';
             }}
           >
             {/* Top row */}
@@ -117,23 +122,27 @@ export const CameraCarousel: React.FC<Props> = ({ recordings, recovered, onSelec
                     fontWeight: 700,
                     padding: '2px 8px',
                     borderRadius: 'var(--radius-xs)',
-                    backgroundColor: s.isRecovered ? 'rgba(245, 158, 11, 0.2)' : 'rgba(60, 110, 113, 0.25)',
-                    color: s.isRecovered ? 'var(--accent-amber)' : 'var(--accent-teal-bright)',
-                    border: `1px solid ${s.isRecovered ? 'rgba(245, 158, 11, 0.4)' : 'var(--palette-stormy-teal)'}`,
+                    backgroundColor: s.isRecovered ? 'var(--accent-amber-bg)' : 'var(--palette-lavender)',
+                    color: s.isRecovered ? 'var(--accent-amber)' : 'var(--palette-deep-purple)',
+                    border: `1px solid ${s.isRecovered ? '#fde68a' : '#c7d2fe'}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
                   }}
                 >
-                  {s.channel}
+                  {s.isRecovered ? <Film size={12} /> : <Video size={12} />}
+                  <span>{s.channel}</span>
                 </span>
                 <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
                   {s.codec} • 1080P
                 </span>
               </div>
 
-              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--palette-white)', marginBottom: '4px' }}>
+              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--palette-deep-navy)', marginBottom: '4px' }}>
                 {s.name}
               </div>
 
-              <div style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', marginBottom: '8px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '12px' }}>
                 Clock: <span className="mono">{s.start}</span> ({s.duration})
               </div>
             </div>
@@ -147,16 +156,18 @@ export const CameraCarousel: React.FC<Props> = ({ recordings, recovered, onSelec
                 fontSize: '12px',
                 fontWeight: 600,
                 borderRadius: 'var(--radius-sm)',
-                backgroundColor: s.isRecovered ? 'rgba(245, 158, 11, 0.2)' : 'rgba(40, 75, 99, 0.4)',
-                border: `1px solid ${s.isRecovered ? 'var(--accent-amber)' : 'var(--palette-yale-blue)'}`,
-                color: s.isRecovered ? 'var(--accent-amber)' : 'var(--palette-white)',
+                backgroundColor: s.isRecovered ? 'var(--accent-amber-bg)' : 'var(--bg-secondary)',
+                border: `1px solid ${s.isRecovered ? '#fde68a' : 'var(--border-color)'}`,
+                color: s.isRecovered ? 'var(--accent-amber)' : 'var(--palette-deep-navy)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '6px',
+                cursor: 'pointer',
               }}
             >
-              <span>📹 Inspect Stream</span>
+              <Video size={14} />
+              <span>Inspect Stream</span>
             </button>
           </div>
         ))}
@@ -164,3 +175,4 @@ export const CameraCarousel: React.FC<Props> = ({ recordings, recovered, onSelec
     </div>
   );
 };
+

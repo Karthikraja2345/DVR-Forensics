@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FolderArchive, Lock, Search, Link2, FileText } from 'lucide-react';
 import { api } from '../services/api';
 import { Case, Evidence, TimelineEvent, Recording, RecoveredArtifact } from '../types';
 import { StatCard } from '../components/ui/StatCard';
@@ -71,7 +72,7 @@ export const DashboardPage: React.FC = () => {
         title="ISO/IEC 27037 & Section 65B Forensics Compliance Active"
         message="Primary physical media is write-blocked. All carving and AI analytics operate strictly on verified bit-stream working copies."
         badge="CERTIFIED READ-ONLY"
-        actionText="📄 Export Court PDF"
+        actionText="Export Court PDF"
         onAction={handleGenerateReport}
       />
 
@@ -89,18 +90,19 @@ export const DashboardPage: React.FC = () => {
             onClick={handleGenerateReport}
             disabled={generatingReport}
           >
-            {generatingReport ? 'Generating Report...' : '📄 Generate Court Report'}
+            <FileText size={14} />
+            <span>{generatingReport ? 'Generating Report...' : 'Generate Court Report'}</span>
           </button>
         </div>
       </div>
 
-      {/* 21st.dev Metric Cards Grid */}
+      {/* Metric Cards Grid */}
       <div className="metric-grid">
         <StatCard
           title="Active Case File"
           value="DEMO-CASE-001"
           subtitle="Cyber Forensic Cell"
-          icon="📁"
+          icon={<FolderArchive size={20} />}
           trend="OPEN"
           trendPositive={true}
         />
@@ -108,7 +110,7 @@ export const DashboardPage: React.FC = () => {
           title="Evidence Hashing Parity"
           value="100.0%"
           subtitle="MD5 + SHA-256 Zero Drift"
-          icon="🔒"
+          icon={<Lock size={20} />}
           trend="VERIFIED"
           trendPositive={true}
           progressPercent={100}
@@ -118,7 +120,7 @@ export const DashboardPage: React.FC = () => {
           title="Carved Deleted Footage"
           value="1 Recovered"
           subtitle="CAM-03 Loading Bay"
-          icon="🔍"
+          icon={<Search size={20} />}
           trend="CONFIRMED"
           trendPositive={true}
           progressPercent={98}
@@ -128,7 +130,7 @@ export const DashboardPage: React.FC = () => {
           title="Cryptographic Custody"
           value="CHAIN VALID"
           subtitle="SHA-256 Backward Pointers"
-          icon="⛓️"
+          icon={<Link2 size={20} />}
           trend="UNBROKEN"
           trendPositive={true}
           highlightColor="var(--accent-green)"
@@ -152,7 +154,7 @@ export const DashboardPage: React.FC = () => {
 
       {/* Evidence Inventory Table */}
       <div style={{ marginTop: '28px', marginBottom: '28px' }}>
-        <h2 style={{ fontSize: '15px', color: 'var(--palette-white)', fontWeight: 600, marginBottom: '12px' }}>
+        <h2 style={{ fontSize: '15px', color: 'var(--palette-deep-navy)', fontWeight: 600, marginBottom: '12px' }}>
           Seized Physical Evidence Containers
         </h2>
         <table className="forensic-table">
@@ -170,18 +172,18 @@ export const DashboardPage: React.FC = () => {
             {evidence.map((ev) => (
               <tr key={ev.id}>
                 <td>
-                  <strong className="mono" style={{ color: 'var(--accent-teal-bright)' }}>{ev.id}</strong>
-                  <div style={{ fontSize: '11px', color: 'var(--palette-dust-grey)' }}>{ev.label}</div>
+                  <strong className="mono" style={{ color: 'var(--palette-deep-purple)' }}>{ev.id}</strong>
+                  <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{ev.label}</div>
                 </td>
                 <td>
-                  <strong style={{ color: 'var(--palette-white)' }}>{ev.detected_vendor}</strong>
+                  <strong style={{ color: 'var(--palette-deep-navy)' }}>{ev.detected_vendor}</strong>
                   <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Profile: {ev.vendor_profile}</div>
                 </td>
                 <td>
                   <span className="badge badge-cyan">RAW/DD BITSTREAM</span>
                   <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '2px' }}>Sector Size: 512B</div>
                 </td>
-                <td className="mono" style={{ fontSize: '12px' }}>
+                <td className="mono" style={{ fontSize: '12px', color: 'var(--palette-deep-navy)' }}>
                   {(ev.file_size_bytes / (1024 * 1024)).toFixed(2)} MB
                 </td>
                 <td>
@@ -198,7 +200,7 @@ export const DashboardPage: React.FC = () => {
 
       {/* Cross-Camera Chronological Narrative */}
       <div style={{ marginTop: '28px' }}>
-        <h2 style={{ fontSize: '15px', color: 'var(--palette-white)', fontWeight: 600, marginBottom: '12px' }}>
+        <h2 style={{ fontSize: '15px', color: 'var(--palette-deep-navy)', fontWeight: 600, marginBottom: '12px' }}>
           Cross-Camera Synchronized Narrative Timeline
         </h2>
         <TimelineView events={timeline} />

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { ChevronDown, Check } from 'lucide-react';
 
 interface Option {
   value: string;
@@ -43,14 +44,14 @@ export const Dropdown: React.FC<Props> = ({ options, value, onChange, label }) =
           display: 'flex',
           alignItems: 'center',
           gap: '10px',
-          padding: '6px 14px',
-          backgroundColor: 'var(--bg-card-solid)',
+          padding: '7px 14px',
+          backgroundColor: '#FFFFFF',
           border: '1px solid var(--border-color)',
           borderRadius: 'var(--radius-sm)',
-          color: 'var(--palette-white)',
+          color: 'var(--palette-deep-navy)',
           fontSize: '12px',
           fontWeight: 600,
-          boxShadow: 'var(--shadow-card)',
+          boxShadow: 'var(--shadow-sm)',
         }}
       >
         <span>{selected ? selected.label : 'Select...'}</span>
@@ -59,17 +60,20 @@ export const Dropdown: React.FC<Props> = ({ options, value, onChange, label }) =
             style={{
               fontSize: '10px',
               padding: '1px 6px',
-              backgroundColor: 'rgba(60, 110, 113, 0.3)',
-              color: 'var(--accent-teal-bright)',
+              backgroundColor: 'var(--palette-lavender)',
+              color: 'var(--palette-deep-purple)',
               borderRadius: 'var(--radius-xs)',
+              fontWeight: 700,
             }}
           >
             {selected.badge}
           </span>
         )}
-        <span style={{ fontSize: '10px', color: 'var(--text-muted)', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}>
-          ▼
-        </span>
+        <ChevronDown
+          size={14}
+          color="var(--text-muted)"
+          style={{ transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}
+        />
       </button>
 
       {isOpen && (
@@ -80,10 +84,10 @@ export const Dropdown: React.FC<Props> = ({ options, value, onChange, label }) =
             left: 0,
             zIndex: 100,
             minWidth: '220px',
-            backgroundColor: '#1b222a',
-            border: '1px solid var(--palette-stormy-teal)',
-            borderRadius: 'var(--radius-sm)',
-            boxShadow: 'var(--shadow-glow-teal)',
+            backgroundColor: '#FFFFFF',
+            border: '1px solid var(--border-color)',
+            borderRadius: 'var(--radius-md)',
+            boxShadow: 'var(--shadow-dropdown)',
             overflow: 'hidden',
             padding: '4px',
           }}
@@ -97,23 +101,23 @@ export const Dropdown: React.FC<Props> = ({ options, value, onChange, label }) =
               }}
               style={{
                 padding: '8px 12px',
-                borderRadius: '4px',
+                borderRadius: 'var(--radius-xs)',
                 cursor: 'pointer',
-                backgroundColor: opt.value === value ? 'rgba(60, 110, 113, 0.25)' : 'transparent',
+                backgroundColor: opt.value === value ? 'var(--palette-lavender)' : 'transparent',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 transition: 'background-color 0.15s ease',
               }}
               onMouseEnter={(e) => {
-                if (opt.value !== value) e.currentTarget.style.backgroundColor = 'rgba(40, 75, 99, 0.3)';
+                if (opt.value !== value) e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
               }}
               onMouseLeave={(e) => {
                 if (opt.value !== value) e.currentTarget.style.backgroundColor = 'transparent';
               }}
             >
               <div>
-                <div style={{ fontSize: '12px', fontWeight: 600, color: opt.value === value ? 'var(--palette-white)' : 'var(--palette-dust-grey)' }}>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: opt.value === value ? 'var(--palette-deep-purple)' : 'var(--palette-deep-navy)' }}>
                   {opt.label}
                 </div>
                 {opt.sub && (
@@ -123,7 +127,7 @@ export const Dropdown: React.FC<Props> = ({ options, value, onChange, label }) =
                 )}
               </div>
               {opt.value === value && (
-                <span style={{ color: 'var(--accent-teal-bright)', fontSize: '12px' }}>✓</span>
+                <Check size={14} color="var(--palette-deep-purple)" />
               )}
             </div>
           ))}
@@ -132,3 +136,4 @@ export const Dropdown: React.FC<Props> = ({ options, value, onChange, label }) =
     </div>
   );
 };
+

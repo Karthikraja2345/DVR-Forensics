@@ -1,4 +1,5 @@
 import React from 'react';
+import { Clock, Video, FileText } from 'lucide-react';
 import { TimelineEvent } from '../types';
 
 interface Props {
@@ -9,9 +10,7 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
   return (
     <div
       style={{
-        backgroundColor: 'var(--bg-card)',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
+        backgroundColor: '#FFFFFF',
         padding: '24px',
         borderRadius: 'var(--radius-md)',
         border: '1px solid var(--border-color)',
@@ -20,10 +19,11 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <div>
-          <h3 style={{ fontSize: '16px', color: 'var(--palette-white)', fontWeight: 600 }}>
+          <h3 style={{ fontSize: '16px', color: 'var(--palette-deep-navy)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Clock size={16} style={{ color: 'var(--palette-deep-purple)' }} />
             Cross-Camera Chronological Incident Reconstruction
           </h3>
-          <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
             Empirically synchronized timeline compensating for multi-camera sub-second clock drift (ISO/IEC 27037).
           </p>
         </div>
@@ -31,11 +31,12 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
           style={{
             fontSize: '11px',
             fontFamily: 'var(--font-mono)',
-            padding: '3px 8px',
+            padding: '3px 10px',
             borderRadius: 'var(--radius-xs)',
-            backgroundColor: 'rgba(60, 110, 113, 0.25)',
-            border: '1px solid var(--palette-stormy-teal)',
-            color: 'var(--accent-teal-bright)',
+            backgroundColor: 'var(--palette-lavender)',
+            border: '1px solid rgba(82, 21, 78, 0.15)',
+            color: 'var(--palette-deep-purple)',
+            fontWeight: 600,
           }}
         >
           {events.length} Events Reconstructed
@@ -56,17 +57,17 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
               bottom: '12px',
               left: '9px',
               width: '2px',
-              background: 'linear-gradient(180deg, var(--palette-stormy-teal) 0%, var(--palette-yale-blue) 100%)',
+              background: 'linear-gradient(180deg, var(--palette-deep-purple) 0%, var(--palette-lavender) 100%)',
             }}
           />
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             {events.map((e) => (
               <div
                 key={e.id}
                 style={{
                   position: 'relative',
-                  backgroundColor: 'var(--bg-card-solid)',
+                  backgroundColor: 'var(--bg-secondary)',
                   borderRadius: 'var(--radius-sm)',
                   border: '1px solid var(--border-color)',
                   padding: '14px 18px',
@@ -74,15 +75,17 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
                   alignItems: 'flex-start',
                   justifyContent: 'space-between',
                   gap: '16px',
-                  transition: 'border-color 0.2s ease, transform 0.2s ease',
+                  transition: 'border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease',
                 }}
                 onMouseEnter={(ev) => {
-                  ev.currentTarget.style.borderColor = 'var(--palette-stormy-teal)';
+                  ev.currentTarget.style.borderColor = 'var(--palette-deep-purple)';
                   ev.currentTarget.style.transform = 'translateX(4px)';
+                  ev.currentTarget.style.boxShadow = 'var(--shadow-card)';
                 }}
                 onMouseLeave={(ev) => {
                   ev.currentTarget.style.borderColor = 'var(--border-color)';
                   ev.currentTarget.style.transform = 'translateX(0)';
+                  ev.currentTarget.style.boxShadow = 'none';
                 }}
               >
                 {/* Node Dot on the timeline */}
@@ -94,9 +97,9 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
                     width: '12px',
                     height: '12px',
                     borderRadius: '50%',
-                    backgroundColor: 'var(--bg-primary)',
-                    border: '2px solid var(--palette-stormy-teal)',
-                    boxShadow: '0 0 6px var(--palette-stormy-teal)',
+                    backgroundColor: '#FFFFFF',
+                    border: '2px solid var(--palette-deep-purple)',
+                    boxShadow: '0 0 6px rgba(82, 21, 78, 0.3)',
                   }}
                 />
 
@@ -107,7 +110,7 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
                         fontFamily: 'var(--font-mono)',
                         fontSize: '12px',
                         fontWeight: 700,
-                        color: 'var(--accent-teal-bright)',
+                        color: 'var(--palette-deep-purple)',
                       }}
                     >
                       {new Date(e.timestamp_utc).toLocaleTimeString()} UTC
@@ -116,21 +119,25 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
                       style={{
                         fontSize: '10px',
                         fontWeight: 700,
-                        padding: '1px 6px',
+                        padding: '2px 7px',
                         borderRadius: 'var(--radius-xs)',
-                        backgroundColor: 'rgba(40, 75, 99, 0.4)',
-                        border: '1px solid var(--palette-yale-blue)',
-                        color: 'var(--palette-white)',
+                        backgroundColor: 'var(--palette-lavender)',
+                        border: '1px solid rgba(82, 21, 78, 0.15)',
+                        color: 'var(--palette-deep-navy)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
                       }}
                     >
+                      <Video size={10} />
                       {e.channel_id}
                     </span>
-                    <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--palette-white)' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--palette-deep-navy)' }}>
                       {e.camera_name}
                     </span>
                   </div>
 
-                  <div style={{ fontSize: '13px', color: 'var(--palette-dust-grey)', lineHeight: 1.5 }}>
+                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                     {e.description}
                   </div>
                 </div>
@@ -141,12 +148,16 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
                     style={{
                       fontSize: '10px',
                       color: 'var(--text-muted)',
-                      backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                      padding: '3px 6px',
+                      backgroundColor: 'var(--bg-primary)',
+                      padding: '3px 8px',
                       borderRadius: 'var(--radius-xs)',
                       border: '1px solid var(--border-subtle)',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
                     }}
                   >
+                    <FileText size={10} />
                     Ref: {e.source_artifact_id}
                   </span>
                 </div>

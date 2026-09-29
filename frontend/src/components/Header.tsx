@@ -1,4 +1,5 @@
 import React from 'react';
+import { Folder, ShieldCheck } from 'lucide-react';
 import { Avatar } from './ui/Avatar';
 
 interface Props {
@@ -13,10 +14,11 @@ export const Header: React.FC<Props> = ({ currentCaseId }) => {
           Active Case:
         </span>
         <span className="case-pill">
-          📁 {currentCaseId}
+          <Folder size={13} style={{ color: 'var(--palette-deep-purple)' }} />
+          <span>{currentCaseId}</span>
         </span>
         <span className="badge badge-green" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--accent-green)' }} />
+          <ShieldCheck size={12} strokeWidth={2.2} />
           WRITE-BLOCK SECURE
         </span>
       </div>
@@ -28,10 +30,11 @@ export const Header: React.FC<Props> = ({ currentCaseId }) => {
               fontSize: '11px',
               padding: '3px 8px',
               borderRadius: 'var(--radius-xs)',
-              backgroundColor: 'rgba(40, 75, 99, 0.35)',
-              border: '1px solid var(--border-yale)',
-              color: 'var(--palette-white)',
+              backgroundColor: 'var(--palette-lavender)',
+              border: '1px solid rgba(82, 21, 78, 0.15)',
+              color: 'var(--palette-deep-navy)',
               fontFamily: 'var(--font-mono)',
+              fontWeight: 600,
             }}
           >
             ISO/IEC 27037:2012
@@ -41,10 +44,11 @@ export const Header: React.FC<Props> = ({ currentCaseId }) => {
               fontSize: '11px',
               padding: '3px 8px',
               borderRadius: 'var(--radius-xs)',
-              backgroundColor: 'rgba(60, 110, 113, 0.25)',
-              border: '1px solid var(--palette-stormy-teal)',
-              color: 'var(--accent-teal-bright)',
+              backgroundColor: 'var(--bg-petal-tint)',
+              border: '1px solid rgba(82, 21, 78, 0.18)',
+              color: 'var(--palette-deep-purple)',
               fontFamily: 'var(--font-mono)',
+              fontWeight: 600,
             }}
           >
             SEC 65B / 63 BSA

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Film, Target, HardDrive, Wrench, Search, CheckCircle2 } from 'lucide-react';
 import { api } from '../services/api';
 import { RecoveredArtifact, Evidence } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
@@ -91,7 +92,8 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
           onClick={handleCarve}
           disabled={carving}
         >
-          {carving ? '⏳ Carving Sectors...' : '🔍 Trigger Deep Cluster Carve'}
+          <Search size={14} />
+          <span>{carving ? 'Carving Sectors...' : 'Trigger Deep Cluster Carve'}</span>
         </button>
       </div>
 
@@ -101,7 +103,7 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
           title="Recovered Artifacts"
           value={artifacts.length}
           subtitle="Carved video streams"
-          icon="🎞️"
+          icon={<Film size={20} />}
           trend="+Carved"
           trendPositive={true}
           highlightColor="var(--accent-amber)"
@@ -110,7 +112,7 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
           title="Structural Confidence"
           value={`${avgConfidence}%`}
           subtitle="NAL header validity"
-          icon="🎯"
+          icon={<Target size={20} />}
           progressPercent={avgConfidence}
           trend={avgConfidence >= 90 ? 'High Fidelity' : 'Good'}
           trendPositive={avgConfidence >= 90}
@@ -119,13 +121,13 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
           title="Carved Byte Volume"
           value={`${(totalBytesCarved / (1024 * 1024)).toFixed(2)} MB`}
           subtitle="From unallocated space"
-          icon="💾"
+          icon={<HardDrive size={20} />}
         />
         <StatCard
           title="Repaired Streams"
           value={Object.keys(repairNotes).length}
           subtitle="SPS/PPS GOP injected"
-          icon="🔧"
+          icon={<Wrench size={20} />}
           trend="Playable"
           trendPositive={true}
         />
@@ -160,27 +162,28 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
             artifacts.map((art) => (
               <tr key={art.id}>
                 <td>
-                  <strong className="mono" style={{ color: 'var(--accent-teal-bright)' }}>{art.artifact_id}</strong>
+                  <strong className="mono" style={{ color: 'var(--palette-deep-purple)' }}>{art.artifact_id}</strong>
                   <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
                     Channel: {art.channel_id || 'CARVED'} • Method: {art.recovery_method}
                   </div>
                   {repairNotes[art.artifact_id] && (
-                    <div style={{ fontSize: '11px', color: 'var(--accent-green)', marginTop: '4px', fontWeight: 600 }}>
-                      ✓ {repairNotes[art.artifact_id]}
+                    <div style={{ fontSize: '11px', color: 'var(--accent-green)', marginTop: '4px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <CheckCircle2 size={12} />
+                      <span>{repairNotes[art.artifact_id]}</span>
                     </div>
                   )}
                 </td>
                 <td>
                   <StatusBadge status={art.recovery_status} />
                 </td>
-                <td className="mono" style={{ fontSize: '12px' }}>
+                <td className="mono" style={{ fontSize: '12px', color: 'var(--palette-deep-navy)' }}>
                   Offset 0x{art.source_byte_offset.toString(16).toUpperCase()} ({art.source_byte_length.toLocaleString()} B)
                 </td>
                 <td style={{ maxWidth: '280px' }}>
                   <div style={{ fontWeight: 600, color: 'var(--accent-green)', fontSize: '12px' }}>
                     {Math.round(art.confidence_score * 100)}% Structural Confidence
                   </div>
-                  <div style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', marginTop: '4px', lineHeight: 1.4 }}>
+                  <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: 1.4 }}>
                     {art.explanation_rules?.rationale}
                   </div>
                 </td>
@@ -194,7 +197,8 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
                     onClick={() => handleRepair(art.artifact_id)}
                     disabled={repairingId === art.artifact_id}
                   >
-                    {repairingId === art.artifact_id ? '⏳ Repairing...' : '🔧 Repair Stream'}
+                    <Wrench size={12} />
+                    <span>{repairingId === art.artifact_id ? 'Repairing...' : 'Repair Stream'}</span>
                   </button>
                 </td>
               </tr>

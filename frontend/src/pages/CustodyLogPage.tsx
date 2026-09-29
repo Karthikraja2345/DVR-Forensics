@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ShieldCheck, FileText, Lock, Scale, Link2, Copy, Check } from 'lucide-react';
 import { api } from '../services/api';
 import { CustodyEvent } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
@@ -69,7 +70,8 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           <StatusBadge status={isValid ? 'CHAIN VALID' : 'CHAIN INVALID'} />
           <button className="btn-primary" onClick={handleVerify} disabled={verifying}>
-            {verifying ? '⏳ Verifying...' : '⛓ Verify Hash Links'}
+            <Link2 size={13} />
+            <span>{verifying ? 'Verifying...' : 'Verify Hash Links'}</span>
           </button>
         </div>
       </div>
@@ -80,7 +82,7 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
           title="Ledger Status"
           value={isValid ? "VALID" : "COMPROMISED"}
           subtitle="Cryptographic proof"
-          icon="🛡️"
+          icon={<ShieldCheck size={20} />}
           trend={isValid ? "Intact" : "Invalid"}
           trendPositive={isValid}
           highlightColor={isValid ? "var(--accent-green)" : "var(--accent-rose)"}
@@ -89,7 +91,7 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
           title="Logged Events"
           value={events.length}
           subtitle="Sequential audit blocks"
-          icon="📜"
+          icon={<FileText size={20} />}
           trend="Immutable"
           trendPositive={true}
         />
@@ -97,7 +99,7 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
           title="Hash Algorithm"
           value="SHA-256"
           subtitle="Backward linked pointers"
-          icon="🔐"
+          icon={<Lock size={20} />}
           trend="Collision Safe"
           trendPositive={true}
         />
@@ -105,7 +107,7 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
           title="Non-Repudiation"
           value="100%"
           subtitle="ISO/IEC 27037 compliant"
-          icon="⚖️"
+          icon={<Scale size={20} />}
           progressPercent={100}
         />
       </div>
@@ -133,13 +135,13 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
                 <span
                   className="mono"
                   style={{
-                    color: 'var(--accent-teal-bright)',
+                    color: 'var(--palette-deep-purple)',
                     fontWeight: 700,
                     fontSize: '12px',
                     padding: '2px 8px',
-                    backgroundColor: 'rgba(60, 110, 113, 0.2)',
+                    backgroundColor: 'var(--palette-lavender)',
                     borderRadius: 'var(--radius-xs)',
-                    border: '1px solid var(--palette-stormy-teal)',
+                    border: '1px solid rgba(82, 21, 78, 0.15)',
                   }}
                 >
                   #{ev.sequence_index.toString().padStart(3, '0')}
@@ -151,53 +153,54 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
                     style={{
                       fontSize: '11px',
                       fontWeight: 700,
-                      padding: '2px 6px',
+                      padding: '2px 8px',
                       borderRadius: 'var(--radius-xs)',
-                      backgroundColor: 'rgba(40, 75, 99, 0.4)',
-                      border: '1px solid var(--palette-yale-blue)',
-                      color: 'var(--palette-white)',
+                      backgroundColor: 'var(--palette-lavender)',
+                      border: '1px solid rgba(82, 21, 78, 0.15)',
+                      color: 'var(--palette-deep-purple)',
                     }}
                   >
                     {ev.action}
                   </span>
                 </div>
                 {ev.notes && (
-                  <div style={{ fontSize: '12px', color: 'var(--palette-dust-grey)', marginTop: '6px', lineHeight: 1.4 }}>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '6px', lineHeight: 1.4 }}>
                     {ev.notes}
                   </div>
                 )}
               </td>
               <td>
-                <div style={{ fontWeight: 600, color: 'var(--palette-white)', fontSize: '13px' }}>{ev.actor}</div>
+                <div style={{ fontWeight: 600, color: 'var(--palette-deep-navy)', fontSize: '13px' }}>{ev.actor}</div>
                 <div className="mono" style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
                   {new Date(ev.timestamp).toLocaleString()}
                 </div>
               </td>
               <td>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', maxWidth: '340px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxWidth: '340px' }}>
                   {/* PREV POINTER */}
                   <div
                     style={{
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      backgroundColor: 'rgba(53, 53, 53, 0.25)',
-                      border: '1px solid rgba(53, 53, 53, 0.5)',
-                      padding: '2px 6px',
-                      borderRadius: '2px',
+                      backgroundColor: 'var(--bg-secondary)',
+                      border: '1px solid var(--border-color)',
+                      padding: '3px 8px',
+                      borderRadius: 'var(--radius-xs)',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
                       <span style={{ fontSize: '9px', fontWeight: 700, color: 'var(--text-muted)' }}>PREV:</span>
-                      <span className="mono" style={{ fontSize: '11px', color: 'var(--palette-dust-grey)' }}>
+                      <span className="mono" style={{ fontSize: '11px', color: 'var(--palette-deep-navy)' }}>
                         {ev.previous_event_hash.substring(0, 16)}...
                       </span>
                     </div>
                     <button
                       onClick={() => handleCopy(ev.previous_event_hash, `prev-${ev.id}`)}
-                      style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '10px', cursor: 'pointer' }}
+                      style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                      title="Copy previous hash"
                     >
-                      {copiedHash === `prev-${ev.id}` ? '✓' : '📋'}
+                      {copiedHash === `prev-${ev.id}` ? <Check size={11} color="var(--accent-green)" /> : <Copy size={11} />}
                     </button>
                   </div>
 
@@ -207,23 +210,24 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      backgroundColor: 'rgba(40, 75, 99, 0.25)',
-                      border: '1px solid rgba(40, 75, 99, 0.45)',
-                      padding: '2px 6px',
-                      borderRadius: '2px',
+                      backgroundColor: 'var(--palette-lavender)',
+                      border: '1px solid rgba(82, 21, 78, 0.15)',
+                      padding: '3px 8px',
+                      borderRadius: 'var(--radius-xs)',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
-                      <span style={{ fontSize: '9px', fontWeight: 700, color: 'var(--accent-teal-bright)' }}>HASH:</span>
-                      <span className="mono" style={{ fontSize: '11px', color: 'var(--accent-green)', fontWeight: 600 }}>
+                      <span style={{ fontSize: '9px', fontWeight: 700, color: 'var(--palette-deep-purple)' }}>HASH:</span>
+                      <span className="mono" style={{ fontSize: '11px', color: 'var(--palette-deep-purple)', fontWeight: 700 }}>
                         {ev.event_hash.substring(0, 16)}...
                       </span>
                     </div>
                     <button
                       onClick={() => handleCopy(ev.event_hash, `hash-${ev.id}`)}
-                      style={{ background: 'none', border: 'none', color: 'var(--accent-teal-bright)', fontSize: '10px', cursor: 'pointer' }}
+                      style={{ background: 'none', border: 'none', color: 'var(--palette-deep-purple)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                      title="Copy event hash"
                     >
-                      {copiedHash === `hash-${ev.id}` ? '✓' : '📋'}
+                      {copiedHash === `hash-${ev.id}` ? <Check size={11} color="var(--accent-green)" /> : <Copy size={11} />}
                     </button>
                   </div>
                 </div>

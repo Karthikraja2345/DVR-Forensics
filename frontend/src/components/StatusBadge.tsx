@@ -32,7 +32,7 @@ export const StatusBadge: React.FC<Props> = ({ status, size = 'sm' }) => {
     s === 'BIT-STREAM LOCKED'
   ) {
     type = 'teal';
-    dotColor = 'var(--accent-teal-bright)';
+    dotColor = 'var(--palette-deep-purple)';
   } else {
     type = 'red';
     dotColor = 'var(--accent-rose)';

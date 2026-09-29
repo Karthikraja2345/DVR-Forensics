@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Plus, ArrowRight } from 'lucide-react';
 import { api } from '../services/api';
 import { Case } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
@@ -63,7 +64,8 @@ export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
           className="btn-primary"
           onClick={() => setShowModal(true)}
         >
-          + Register New Case
+          <Plus size={14} />
+          <span>Register New Case</span>
         </button>
       </div>
 
@@ -82,20 +84,20 @@ export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
           {cases.map((c) => (
             <tr key={c.id}>
               <td>
-                <strong className="mono" style={{ color: 'var(--accent-teal-bright)' }}>{c.id}</strong>
+                <strong className="mono" style={{ color: 'var(--palette-deep-purple)' }}>{c.id}</strong>
               </td>
               <td>
-                <div style={{ fontWeight: 600, color: 'var(--palette-white)' }}>{c.name}</div>
+                <div style={{ fontWeight: 600, color: 'var(--palette-deep-navy)' }}>{c.name}</div>
                 <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>{c.description}</div>
               </td>
               <td>
-                <div style={{ color: 'var(--palette-white)' }}>{c.investigator}</div>
-                <div style={{ fontSize: '11px', color: 'var(--palette-dust-grey)' }}>{c.agency}</div>
+                <div style={{ color: 'var(--palette-deep-navy)', fontWeight: 500 }}>{c.investigator}</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>{c.agency}</div>
               </td>
               <td>
                 <StatusBadge status={c.status} />
               </td>
-              <td className="mono" style={{ fontSize: '11px' }}>
+              <td className="mono" style={{ fontSize: '11px', color: 'var(--palette-deep-navy)' }}>
                 {new Date(c.created_at).toLocaleDateString()}
               </td>
               <td>
@@ -104,7 +106,8 @@ export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
                   style={{ fontSize: '11px', padding: '6px 12px' }}
                   onClick={() => onSelectCase(c.id)}
                 >
-                  Set Active Case
+                  <span>Set Active</span>
+                  <ArrowRight size={11} />
                 </button>
               </td>
             </tr>
@@ -118,8 +121,8 @@ export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
           style={{
             position: 'fixed',
             inset: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
-            backdropFilter: 'blur(6px)',
+            backgroundColor: 'rgba(17, 19, 68, 0.45)',
+            backdropFilter: 'blur(4px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -128,16 +131,16 @@ export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
         >
           <div
             style={{
-              backgroundColor: 'var(--bg-card-solid)',
+              backgroundColor: '#FFFFFF',
               border: '1px solid var(--border-color)',
               borderRadius: 'var(--radius-md)',
               width: '100%',
-              maxWidth: '460px',
+              maxWidth: '480px',
               padding: '24px',
-              boxShadow: 'var(--shadow-glow-yale)',
+              boxShadow: 'var(--shadow-dropdown)',
             }}
           >
-            <h2 style={{ fontSize: '16px', color: 'var(--palette-white)', marginBottom: '4px' }}>
+            <h2 style={{ fontSize: '16px', color: 'var(--palette-deep-navy)', marginBottom: '4px' }}>
               Register Forensic Case
             </h2>
             <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '18px' }}>
@@ -146,19 +149,19 @@ export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
 
             <form onSubmit={handleCreateCase} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
-                <label style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '11px', color: 'var(--palette-deep-navy)', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
                   Case ID
                 </label>
                 <input
                   type="text"
                   value={newCase.id}
                   disabled
-                  style={{ width: '100%', opacity: 0.7 }}
+                  style={{ width: '100%', opacity: 0.7, backgroundColor: 'var(--bg-secondary)' }}
                 />
               </div>
 
               <div>
-                <label style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '11px', color: 'var(--palette-deep-navy)', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
                   Case Title
                 </label>
                 <input
@@ -172,7 +175,7 @@ export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
               </div>
 
               <div>
-                <label style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '11px', color: 'var(--palette-deep-navy)', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
                   Investigating Agency / Unit
                 </label>
                 <input
@@ -185,7 +188,7 @@ export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
               </div>
 
               <div>
-                <label style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '11px', color: 'var(--palette-deep-navy)', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
                   Lead Examiner
                 </label>
                 <input
@@ -198,7 +201,7 @@ export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
               </div>
 
               <div>
-                <label style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '11px', color: 'var(--palette-deep-navy)', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
                   Brief Incident Description
                 </label>
                 <textarea

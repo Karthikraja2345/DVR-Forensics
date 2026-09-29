@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Video, Film, Clock, ShieldCheck } from 'lucide-react';
 import { api } from '../services/api';
 import { Recording, RecoveredArtifact } from '../types';
 import { VideoReplayer } from '../components/VideoReplayer';
@@ -49,7 +50,8 @@ export const ForensicReplayPage: React.FC<Props> = ({ caseId }) => {
           </p>
         </div>
         <span className="case-pill">
-          🎥 {totalStreams} Evidence Feeds Online
+          <Video size={13} style={{ color: 'var(--palette-deep-purple)' }} />
+          <span>{totalStreams} Evidence Feeds Online</span>
         </span>
       </div>
 
@@ -59,7 +61,7 @@ export const ForensicReplayPage: React.FC<Props> = ({ caseId }) => {
           title="Active Streams"
           value={recordings.length}
           subtitle="Allocated DVR partitions"
-          icon="📹"
+          icon={<Video size={20} />}
           trend="Bitstream OK"
           trendPositive={true}
         />
@@ -67,7 +69,7 @@ export const ForensicReplayPage: React.FC<Props> = ({ caseId }) => {
           title="Carved Streams"
           value={recovered.length}
           subtitle="Unallocated sectors recovered"
-          icon="🎞️"
+          icon={<Film size={20} />}
           trend="H.264 Carved"
           trendPositive={true}
           highlightColor="var(--accent-amber)"
@@ -76,7 +78,7 @@ export const ForensicReplayPage: React.FC<Props> = ({ caseId }) => {
           title="Clock Alignment"
           value="±0.04s"
           subtitle="Sub-second drift compensation"
-          icon="⏱️"
+          icon={<Clock size={20} />}
           trend="Synchronized"
           trendPositive={true}
         />
@@ -84,7 +86,7 @@ export const ForensicReplayPage: React.FC<Props> = ({ caseId }) => {
           title="Frame Verification"
           value="100%"
           subtitle="Zero dropped GOP packets"
-          icon="🛡️"
+          icon={<ShieldCheck size={20} />}
           progressPercent={100}
         />
       </div>

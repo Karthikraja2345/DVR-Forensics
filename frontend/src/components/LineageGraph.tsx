@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ArrowRight, Copy, Check, Search } from 'lucide-react';
 import { LineageGraph as ILineageGraph, LineageNode } from '../types';
 
 interface Props {
@@ -20,7 +21,7 @@ export const LineageGraph: React.FC<Props> = ({ graph }) => {
     <div className="dag-container">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
         <div>
-          <h3 style={{ fontSize: '16px', color: 'var(--palette-white)', fontWeight: 600 }}>
+          <h3 style={{ fontSize: '16px', color: 'var(--palette-deep-navy)', fontWeight: 600 }}>
             Evidence Lineage DAG (Directed Acyclic Graph)
           </h3>
           <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
@@ -31,11 +32,11 @@ export const LineageGraph: React.FC<Props> = ({ graph }) => {
           style={{
             fontSize: '11px',
             fontFamily: 'var(--font-mono)',
-            padding: '3px 8px',
+            padding: '3px 10px',
             borderRadius: 'var(--radius-xs)',
-            backgroundColor: 'rgba(60, 110, 113, 0.25)',
-            border: '1px solid var(--palette-stormy-teal)',
-            color: 'var(--accent-teal-bright)',
+            backgroundColor: 'var(--palette-lavender)',
+            border: '1px solid rgba(82, 21, 78, 0.15)',
+            color: 'var(--palette-deep-purple)',
             fontWeight: 600,
           }}
         >
@@ -52,9 +53,9 @@ export const LineageGraph: React.FC<Props> = ({ graph }) => {
               <div
                 className="dag-node"
                 style={{
-                  borderColor: isSelected ? 'var(--palette-stormy-teal)' : 'var(--border-color)',
-                  backgroundColor: isSelected ? 'rgba(60, 110, 113, 0.15)' : 'var(--bg-card-solid)',
-                  boxShadow: isSelected ? 'var(--shadow-glow-teal)' : 'var(--shadow-card)',
+                  borderColor: isSelected ? 'var(--palette-deep-purple)' : 'var(--border-color)',
+                  backgroundColor: isSelected ? 'rgba(82, 21, 78, 0.05)' : '#FFFFFF',
+                  boxShadow: isSelected ? '0 0 0 2px var(--palette-deep-purple), var(--shadow-card)' : 'var(--shadow-card)',
                   cursor: 'pointer',
                   transform: isSelected ? 'translateY(-2px)' : 'none',
                 }}
@@ -67,10 +68,10 @@ export const LineageGraph: React.FC<Props> = ({ graph }) => {
                       textTransform: 'uppercase',
                       letterSpacing: '0.06em',
                       fontWeight: 700,
-                      padding: '1px 5px',
-                      borderRadius: '2px',
-                      backgroundColor: 'rgba(40, 75, 99, 0.4)',
-                      color: 'var(--accent-teal-bright)',
+                      padding: '2px 6px',
+                      borderRadius: '3px',
+                      backgroundColor: 'var(--palette-lavender)',
+                      color: 'var(--palette-deep-purple)',
                     }}
                   >
                     {node.node_type.replace('_', ' ')}
@@ -80,7 +81,7 @@ export const LineageGraph: React.FC<Props> = ({ graph }) => {
                   </span>
                 </div>
 
-                <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--palette-white)', marginTop: '2px' }}>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--palette-deep-navy)', marginTop: '2px' }}>
                   {node.label}
                 </div>
 
@@ -88,11 +89,12 @@ export const LineageGraph: React.FC<Props> = ({ graph }) => {
                   className="mono"
                   style={{
                     fontSize: '10px',
-                    color: 'var(--accent-teal-bright)',
+                    color: 'var(--palette-deep-purple)',
                     marginTop: '8px',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
+                    fontWeight: 600,
                   }}
                 >
                   {node.sha256 ? `${node.sha256.substring(0, 14)}...` : 'Virtual Index Node'}
@@ -103,14 +105,13 @@ export const LineageGraph: React.FC<Props> = ({ graph }) => {
                 <div
                   className="dag-arrow"
                   style={{
-                    color: 'var(--palette-stormy-teal)',
-                    fontSize: '18px',
+                    color: 'var(--palette-deep-purple)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
-                  ➔
+                  <ArrowRight size={18} strokeWidth={2.5} />
                 </div>
               )}
             </React.Fragment>
@@ -124,24 +125,27 @@ export const LineageGraph: React.FC<Props> = ({ graph }) => {
           style={{
             marginTop: '28px',
             padding: '20px',
-            backgroundColor: 'var(--bg-card-solid)',
+            backgroundColor: '#FFFFFF',
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--border-color)',
             boxShadow: 'var(--shadow-card)',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-            <h4 style={{ fontSize: '14px', color: 'var(--palette-white)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span>🔍</span> Lineage Node Inspector: <span style={{ color: 'var(--accent-teal-bright)' }}>{activeNode.label}</span>
+            <h4 style={{ fontSize: '14px', color: 'var(--palette-deep-navy)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Search size={15} style={{ color: 'var(--palette-deep-purple)' }} />
+              <span>Lineage Node Inspector:</span>
+              <span style={{ color: 'var(--palette-deep-purple)' }}>{activeNode.label}</span>
             </h4>
             <span
               style={{
                 fontSize: '11px',
                 fontFamily: 'var(--font-mono)',
-                color: 'var(--palette-dust-grey)',
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                color: 'var(--text-muted)',
+                backgroundColor: 'var(--bg-secondary)',
                 padding: '2px 8px',
                 borderRadius: 'var(--radius-xs)',
+                border: '1px solid var(--border-subtle)',
               }}
             >
               ID: {activeNode.id}
@@ -149,30 +153,30 @@ export const LineageGraph: React.FC<Props> = ({ graph }) => {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px', fontSize: '12px' }}>
-            <div style={{ padding: '8px 12px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ color: 'var(--text-muted)', fontSize: '11px', textTransform: 'uppercase' }}>Timestamp (UTC)</div>
-              <div className="mono" style={{ color: 'var(--palette-white)', fontWeight: 600, marginTop: '2px' }}>
+            <div style={{ padding: '10px 14px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+              <div style={{ color: 'var(--text-muted)', fontSize: '11px', textTransform: 'uppercase', fontWeight: 600 }}>Timestamp (UTC)</div>
+              <div className="mono" style={{ color: 'var(--palette-deep-navy)', fontWeight: 600, marginTop: '2px' }}>
                 {new Date(activeNode.timestamp).toUTCString()}
               </div>
             </div>
 
-            <div style={{ padding: '8px 12px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ color: 'var(--text-muted)', fontSize: '11px', textTransform: 'uppercase' }}>Actor / Engine</div>
-              <div style={{ color: 'var(--palette-white)', fontWeight: 600, marginTop: '2px' }}>
+            <div style={{ padding: '10px 14px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+              <div style={{ color: 'var(--text-muted)', fontSize: '11px', textTransform: 'uppercase', fontWeight: 600 }}>Actor / Engine</div>
+              <div style={{ color: 'var(--palette-deep-navy)', fontWeight: 600, marginTop: '2px' }}>
                 {activeNode.actor}
               </div>
             </div>
 
-            <div style={{ padding: '8px 12px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ color: 'var(--text-muted)', fontSize: '11px', textTransform: 'uppercase' }}>Tool / Algorithm</div>
-              <div className="mono" style={{ color: 'var(--palette-white)', fontWeight: 600, marginTop: '2px' }}>
+            <div style={{ padding: '10px 14px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+              <div style={{ color: 'var(--text-muted)', fontSize: '11px', textTransform: 'uppercase', fontWeight: 600 }}>Tool / Algorithm</div>
+              <div className="mono" style={{ color: 'var(--palette-deep-navy)', fontWeight: 600, marginTop: '2px' }}>
                 {activeNode.tool_version}
               </div>
             </div>
 
-            <div style={{ padding: '8px 12px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ color: 'var(--text-muted)', fontSize: '11px', textTransform: 'uppercase' }}>Stage Classification</div>
-              <div style={{ color: 'var(--accent-teal-bright)', fontWeight: 600, marginTop: '2px' }}>
+            <div style={{ padding: '10px 14px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+              <div style={{ color: 'var(--text-muted)', fontSize: '11px', textTransform: 'uppercase', fontWeight: 600 }}>Stage Classification</div>
+              <div style={{ color: 'var(--palette-deep-purple)', fontWeight: 600, marginTop: '2px' }}>
                 {activeNode.node_type.replace('_', ' ').toUpperCase()}
               </div>
             </div>
@@ -183,9 +187,9 @@ export const LineageGraph: React.FC<Props> = ({ graph }) => {
               style={{
                 marginTop: '16px',
                 padding: '10px 14px',
-                backgroundColor: 'rgba(40, 75, 99, 0.25)',
+                backgroundColor: 'var(--palette-lavender)',
                 borderRadius: 'var(--radius-xs)',
-                border: '1px solid var(--palette-yale-blue)',
+                border: '1px solid rgba(82, 21, 78, 0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -193,25 +197,22 @@ export const LineageGraph: React.FC<Props> = ({ graph }) => {
               }}
             >
               <div>
-                <span style={{ fontSize: '11px', color: 'var(--text-muted)', marginRight: '8px' }}>
+                <span style={{ fontSize: '11px', color: 'var(--palette-deep-navy)', marginRight: '8px', fontWeight: 600 }}>
                   Cryptographic SHA-256 Digest:
                 </span>
-                <span className="mono" style={{ color: 'var(--accent-green)', fontSize: '12px', fontWeight: 600 }}>
+                <span className="mono" style={{ color: 'var(--palette-deep-purple)', fontSize: '12px', fontWeight: 700 }}>
                   {activeNode.sha256}
                 </span>
               </div>
               <button
                 onClick={() => handleCopySha(activeNode.sha256)}
+                className="btn-primary"
                 style={{
-                  backgroundColor: 'var(--palette-stormy-teal)',
-                  color: 'var(--palette-white)',
                   fontSize: '11px',
-                  fontWeight: 600,
                   padding: '4px 10px',
-                  borderRadius: 'var(--radius-xs)',
                 }}
               >
-                {copiedSha ? '✓ Copied' : '📋 Copy'}
+                {copiedSha ? <><Check size={12} /> Copied</> : <><Copy size={12} /> Copy</>}
               </button>
             </div>
           )}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Copy, Check } from 'lucide-react';
 
 interface Props {
   md5: string;
@@ -24,10 +25,10 @@ export const HashViewer: React.FC<Props> = ({ md5, sha256, compact = false }) =>
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '8px',
-          backgroundColor: 'rgba(40, 75, 99, 0.2)',
-          border: '1px solid rgba(40, 75, 99, 0.4)',
+          backgroundColor: '#F8F5F4',
+          border: '1px solid var(--border-color)',
           borderRadius: 'var(--radius-xs)',
-          padding: '3px 8px',
+          padding: '4px 8px',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
@@ -35,10 +36,10 @@ export const HashViewer: React.FC<Props> = ({ md5, sha256, compact = false }) =>
             style={{
               fontSize: '9px',
               fontWeight: 700,
-              padding: '1px 4px',
+              padding: '1px 5px',
               borderRadius: '2px',
-              backgroundColor: 'var(--palette-yale-blue)',
-              color: 'var(--palette-white)',
+              backgroundColor: 'var(--palette-deep-purple)',
+              color: '#FFFFFF',
               fontFamily: 'var(--font-mono)',
             }}
           >
@@ -48,7 +49,8 @@ export const HashViewer: React.FC<Props> = ({ md5, sha256, compact = false }) =>
             className="mono"
             style={{
               fontSize: '11px',
-              color: 'var(--accent-teal-bright)',
+              color: 'var(--palette-deep-navy)',
+              fontWeight: 600,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -64,15 +66,24 @@ export const HashViewer: React.FC<Props> = ({ md5, sha256, compact = false }) =>
             background: 'none',
             border: 'none',
             color: copied === 'sha' ? 'var(--accent-green)' : 'var(--text-muted)',
-            fontSize: '10px',
-            fontWeight: 600,
             cursor: 'pointer',
             padding: '2px 4px',
-            whiteSpace: 'nowrap',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '3px',
+            fontSize: '11px',
+            fontWeight: 600,
           }}
           title="Copy full SHA-256 digest"
         >
-          {copied === 'sha' ? '✓ Copied' : '📋'}
+          {copied === 'sha' ? (
+            <>
+              <Check size={12} color="var(--accent-green)" />
+              <span style={{ color: 'var(--accent-green)' }}>Copied</span>
+            </>
+          ) : (
+            <Copy size={12} />
+          )}
         </button>
       </div>
 
@@ -83,10 +94,10 @@ export const HashViewer: React.FC<Props> = ({ md5, sha256, compact = false }) =>
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '8px',
-          backgroundColor: 'rgba(53, 53, 53, 0.25)',
-          border: '1px solid rgba(53, 53, 53, 0.5)',
+          backgroundColor: '#F8F5F4',
+          border: '1px solid var(--border-color)',
           borderRadius: 'var(--radius-xs)',
-          padding: '3px 8px',
+          padding: '4px 8px',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
@@ -94,10 +105,10 @@ export const HashViewer: React.FC<Props> = ({ md5, sha256, compact = false }) =>
             style={{
               fontSize: '9px',
               fontWeight: 700,
-              padding: '1px 4px',
+              padding: '1px 5px',
               borderRadius: '2px',
-              backgroundColor: 'var(--palette-graphite)',
-              color: 'var(--palette-dust-grey)',
+              backgroundColor: 'var(--palette-deep-navy)',
+              color: '#FFFFFF',
               fontFamily: 'var(--font-mono)',
             }}
           >
@@ -107,7 +118,7 @@ export const HashViewer: React.FC<Props> = ({ md5, sha256, compact = false }) =>
             className="mono"
             style={{
               fontSize: '11px',
-              color: 'var(--palette-dust-grey)',
+              color: 'var(--text-secondary)',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -123,18 +134,28 @@ export const HashViewer: React.FC<Props> = ({ md5, sha256, compact = false }) =>
             background: 'none',
             border: 'none',
             color: copied === 'md5' ? 'var(--accent-green)' : 'var(--text-muted)',
-            fontSize: '10px',
-            fontWeight: 600,
             cursor: 'pointer',
             padding: '2px 4px',
-            whiteSpace: 'nowrap',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '3px',
+            fontSize: '11px',
+            fontWeight: 600,
           }}
           title="Copy MD5 hash"
         >
-          {copied === 'md5' ? '✓ Copied' : '📋'}
+          {copied === 'md5' ? (
+            <>
+              <Check size={12} color="var(--accent-green)" />
+              <span style={{ color: 'var(--accent-green)' }}>Copied</span>
+            </>
+          ) : (
+            <Copy size={12} />
+          )}
         </button>
       </div>
     </div>
   );
 };
+
 

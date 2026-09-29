@@ -13,8 +13,8 @@ export const ProgressBar: React.FC<Props> = ({
   value,
   label,
   sublabel,
-  color = 'var(--palette-stormy-teal)',
-  height = 8,
+  color = 'var(--palette-deep-purple)',
+  height = 7,
   showPercentage = true,
 }) => {
   const clamped = Math.min(100, Math.max(0, value));
@@ -25,7 +25,7 @@ export const ProgressBar: React.FC<Props> = ({
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
           <div>
             {label && (
-              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--palette-white)' }}>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--palette-deep-navy)' }}>
                 {label}
               </span>
             )}
@@ -46,7 +46,7 @@ export const ProgressBar: React.FC<Props> = ({
         style={{
           width: '100%',
           height: `${height}px`,
-          backgroundColor: 'rgba(255, 255, 255, 0.08)',
+          backgroundColor: '#ECE6E5',
           borderRadius: `${height / 2}px`,
           overflow: 'hidden',
           position: 'relative',
@@ -57,12 +57,12 @@ export const ProgressBar: React.FC<Props> = ({
             height: '100%',
             width: `${clamped}%`,
             backgroundColor: color,
-            boxShadow: `0 0 10px ${color}`,
             borderRadius: `${height / 2}px`,
-            transition: 'width 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+            transition: 'width 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         />
       </div>
     </div>
   );
 };
+
