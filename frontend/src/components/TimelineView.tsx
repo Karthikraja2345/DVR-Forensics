@@ -14,13 +14,13 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
         padding: '24px',
         borderRadius: 'var(--radius-md)',
         border: '1px solid var(--border-color)',
-        boxShadow: 'var(--shadow-card)',
+        boxShadow: 'var(--shadow-sm)',
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '20px' }}>
         <div>
-          <h3 style={{ fontSize: '16px', color: 'var(--palette-deep-navy)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Clock size={16} style={{ color: 'var(--palette-deep-purple)' }} />
+          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', color: 'var(--palette-prussian)', fontWeight: 400, display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Clock size={16} color="var(--palette-gold)" />
             Cross-Camera Chronological Incident Reconstruction
           </h3>
           <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
@@ -33,9 +33,9 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
             fontFamily: 'var(--font-mono)',
             padding: '3px 10px',
             borderRadius: 'var(--radius-xs)',
-            backgroundColor: 'var(--palette-lavender)',
-            border: '1px solid rgba(82, 21, 78, 0.15)',
-            color: 'var(--palette-deep-purple)',
+            backgroundColor: 'var(--palette-prussian-tint)',
+            border: '1px solid rgba(20, 33, 61, 0.15)',
+            color: 'var(--palette-prussian)',
             fontWeight: 600,
           }}
         >
@@ -57,7 +57,7 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
               bottom: '12px',
               left: '9px',
               width: '2px',
-              background: 'linear-gradient(180deg, var(--palette-deep-purple) 0%, var(--palette-lavender) 100%)',
+              background: 'linear-gradient(180deg, var(--palette-prussian) 0%, var(--palette-gold) 100%)',
             }}
           />
 
@@ -67,7 +67,7 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
                 key={e.id}
                 style={{
                   position: 'relative',
-                  backgroundColor: 'var(--bg-secondary)',
+                  backgroundColor: '#FAF9F8',
                   borderRadius: 'var(--radius-sm)',
                   border: '1px solid var(--border-color)',
                   padding: '14px 18px',
@@ -75,17 +75,15 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
                   alignItems: 'flex-start',
                   justifyContent: 'space-between',
                   gap: '16px',
-                  transition: 'border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease',
+                  transition: 'border-color 0.15s ease, transform 0.15s ease',
                 }}
                 onMouseEnter={(ev) => {
-                  ev.currentTarget.style.borderColor = 'var(--palette-deep-purple)';
-                  ev.currentTarget.style.transform = 'translateX(4px)';
-                  ev.currentTarget.style.boxShadow = 'var(--shadow-card)';
+                  ev.currentTarget.style.borderColor = 'var(--palette-prussian)';
+                  ev.currentTarget.style.transform = 'translateX(3px)';
                 }}
                 onMouseLeave={(ev) => {
                   ev.currentTarget.style.borderColor = 'var(--border-color)';
                   ev.currentTarget.style.transform = 'translateX(0)';
-                  ev.currentTarget.style.boxShadow = 'none';
                 }}
               >
                 {/* Node Dot on the timeline */}
@@ -98,8 +96,8 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
                     height: '12px',
                     borderRadius: '50%',
                     backgroundColor: '#FFFFFF',
-                    border: '2px solid var(--palette-deep-purple)',
-                    boxShadow: '0 0 6px rgba(82, 21, 78, 0.3)',
+                    border: '2px solid var(--palette-gold)',
+                    boxShadow: '0 0 4px rgba(252, 163, 17, 0.4)',
                   }}
                 />
 
@@ -110,7 +108,7 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
                         fontFamily: 'var(--font-mono)',
                         fontSize: '12px',
                         fontWeight: 700,
-                        color: 'var(--palette-deep-purple)',
+                        color: 'var(--palette-prussian)',
                       }}
                     >
                       {new Date(e.timestamp_utc).toLocaleTimeString()} UTC
@@ -121,18 +119,18 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
                         fontWeight: 700,
                         padding: '2px 7px',
                         borderRadius: 'var(--radius-xs)',
-                        backgroundColor: 'var(--palette-lavender)',
-                        border: '1px solid rgba(82, 21, 78, 0.15)',
-                        color: 'var(--palette-deep-navy)',
+                        backgroundColor: 'var(--palette-gold-tint)',
+                        border: '1px solid rgba(252, 163, 17, 0.35)',
+                        color: '#B45309',
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '4px',
                       }}
                     >
-                      <Video size={10} />
+                      <Video size={10} color="#B45309" />
                       {e.channel_id}
                     </span>
-                    <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--palette-deep-navy)' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--palette-prussian)' }}>
                       {e.camera_name}
                     </span>
                   </div>
@@ -148,7 +146,7 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
                     style={{
                       fontSize: '10px',
                       color: 'var(--text-muted)',
-                      backgroundColor: 'var(--bg-primary)',
+                      backgroundColor: '#FFFFFF',
                       padding: '3px 8px',
                       borderRadius: 'var(--radius-xs)',
                       border: '1px solid var(--border-subtle)',
@@ -169,4 +167,3 @@ export const TimelineView: React.FC<Props> = ({ events }) => {
     </div>
   );
 };
-

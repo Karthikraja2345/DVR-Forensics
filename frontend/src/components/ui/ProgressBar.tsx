@@ -13,7 +13,7 @@ export const ProgressBar: React.FC<Props> = ({
   value,
   label,
   sublabel,
-  color = 'var(--palette-deep-purple)',
+  color = 'var(--palette-prussian)',
   height = 7,
   showPercentage = true,
 }) => {
@@ -25,7 +25,7 @@ export const ProgressBar: React.FC<Props> = ({
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
           <div>
             {label && (
-              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--palette-deep-navy)' }}>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--palette-prussian)' }}>
                 {label}
               </span>
             )}

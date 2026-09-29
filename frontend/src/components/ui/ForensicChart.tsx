@@ -5,7 +5,7 @@ interface TimelinePoint {
   time: string;
   camera: string;
   activity: string;
-  intensity: number; // 1 to 5
+  intensity: number;
 }
 
 interface Props {
@@ -35,25 +35,25 @@ export const ForensicChart: React.FC<Props> = ({
         border: '1px solid var(--border-color)',
         borderRadius: 'var(--radius-md)',
         padding: '20px',
-        boxShadow: 'var(--shadow-card)',
+        boxShadow: 'var(--shadow-sm)',
         margin: '20px 0',
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '16px' }}>
         <div>
-          <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--palette-deep-navy)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Activity size={16} color="var(--palette-deep-purple)" />
+          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 400, color: 'var(--palette-prussian)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Activity size={16} color="var(--palette-gold)" />
             <span>{title}</span>
           </h3>
           <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
-            Sector read velocity: <strong style={{ color: 'var(--palette-deep-purple)' }}>{throughputMbMin.toLocaleString()} MB/min</strong> • 0 Frame Dropped
+            Sector read velocity: <strong style={{ color: 'var(--palette-prussian)' }}>{throughputMbMin.toLocaleString()} MB/min</strong> • 0 Frame Dropped
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: 'flex', gap: '14px' }}>
           <span style={{ fontSize: '11px', color: 'var(--accent-green)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
             ● Active Stream
           </span>
-          <span style={{ fontSize: '11px', color: 'var(--accent-amber)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <span style={{ fontSize: '11px', color: '#B45309', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
             ● Carved Footage
           </span>
         </div>
@@ -63,38 +63,38 @@ export const ForensicChart: React.FC<Props> = ({
       <div style={{ width: '100%', height: '110px', position: 'relative' }}>
         <svg viewBox="0 0 500 100" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
           <defs>
-            <linearGradient id="chartGradientLight" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#DAE0F2" stopOpacity="0.8" />
+            <linearGradient id="chartGradientPrussian" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#14213D" stopOpacity="0.12" />
               <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.0" />
             </linearGradient>
           </defs>
 
           {/* Grid lines */}
-          <line x1="0" y1="20" x2="500" y2="20" stroke="#ECE6E5" strokeDasharray="3 3" />
-          <line x1="0" y1="50" x2="500" y2="50" stroke="#ECE6E5" strokeDasharray="3 3" />
-          <line x1="0" y1="80" x2="500" y2="80" stroke="#ECE6E5" strokeDasharray="3 3" />
+          <line x1="0" y1="20" x2="500" y2="20" stroke="#EEEEEE" strokeDasharray="3 3" />
+          <line x1="0" y1="50" x2="500" y2="50" stroke="#EEEEEE" strokeDasharray="3 3" />
+          <line x1="0" y1="80" x2="500" y2="80" stroke="#EEEEEE" strokeDasharray="3 3" />
 
           {/* Area fill */}
           <path
             d="M 20 85 L 70 65 L 170 30 L 270 15 L 370 45 L 470 25 L 470 95 L 20 95 Z"
-            fill="url(#chartGradientLight)"
+            fill="url(#chartGradientPrussian)"
           />
 
           {/* Line curve */}
           <path
             d="M 20 85 L 70 65 L 170 30 L 270 15 L 370 45 L 470 25"
             fill="none"
-            stroke="var(--palette-deep-purple)"
-            strokeWidth="2.5"
+            stroke="var(--palette-prussian)"
+            strokeWidth="2.2"
           />
 
           {/* Event Points */}
-          <circle cx="20" cy="85" r="4" fill="#52154E" stroke="#FFFFFF" strokeWidth="2" />
-          <circle cx="70" cy="65" r="4" fill="#52154E" stroke="#FFFFFF" strokeWidth="2" />
-          <circle cx="170" cy="30" r="4" fill="#52154E" stroke="#FFFFFF" strokeWidth="2" />
-          <circle cx="270" cy="15" r="5" fill="#b45309" stroke="#FFFFFF" strokeWidth="2" />
-          <circle cx="370" cy="45" r="4" fill="#52154E" stroke="#FFFFFF" strokeWidth="2" />
-          <circle cx="470" cy="25" r="4" fill="#15803d" stroke="#FFFFFF" strokeWidth="2" />
+          <circle cx="20" cy="85" r="4" fill="#14213D" stroke="#FFFFFF" strokeWidth="2" />
+          <circle cx="70" cy="65" r="4" fill="#14213D" stroke="#FFFFFF" strokeWidth="2" />
+          <circle cx="170" cy="30" r="4" fill="#14213D" stroke="#FFFFFF" strokeWidth="2" />
+          <circle cx="270" cy="15" r="5" fill="#FCA311" stroke="#FFFFFF" strokeWidth="2" />
+          <circle cx="370" cy="45" r="4" fill="#14213D" stroke="#FFFFFF" strokeWidth="2" />
+          <circle cx="470" cy="25" r="4" fill="#15803D" stroke="#FFFFFF" strokeWidth="2" />
         </svg>
       </div>
 
@@ -104,8 +104,8 @@ export const ForensicChart: React.FC<Props> = ({
           <span
             key={i}
             style={{
-              color: pt.activity.toLowerCase().includes('carved') ? 'var(--accent-amber)' : 'var(--text-muted)',
-              fontWeight: pt.activity.toLowerCase().includes('carved') ? 600 : 500,
+              color: pt.activity.toLowerCase().includes('carved') ? '#B45309' : 'var(--text-muted)',
+              fontWeight: pt.activity.toLowerCase().includes('carved') ? 700 : 500,
             }}
           >
             {pt.camera} ({pt.time})
@@ -115,4 +115,3 @@ export const ForensicChart: React.FC<Props> = ({
     </div>
   );
 };
-

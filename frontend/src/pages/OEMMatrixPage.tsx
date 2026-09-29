@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle2, Ruler, ClipboardList, Scale } from 'lucide-react';
 import { api } from '../services/api';
 import { OEMMatrixItem } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
-import { StatCard } from '../components/ui/StatCard';
+import { ExecutiveMetricStrip } from '../components/ui/ExecutiveMetricStrip';
 import { AlertBanner } from '../components/ui/AlertBanner';
 import { Dropdown } from '../components/ui/Dropdown';
 
@@ -63,42 +62,35 @@ export const OEMMatrixPage: React.FC = () => {
         />
       </div>
 
-      {/* OEM Tier StatCards */}
-      <div className="metric-grid">
-        <StatCard
-          title="Empirically Validated"
-          value={validatedCount}
-          subtitle="Hikvision & Dahua"
-          icon={<CheckCircle2 size={20} />}
-          trend="Ground Truth OK"
-          trendPositive={true}
-          highlightColor="var(--accent-green)"
-        />
-        <StatCard
-          title="Profile Spec Ready"
-          value={profileReadyCount}
-          subtitle="CP Plus & Uniview"
-          icon={<Ruler size={20} />}
-          trend="Parser Spec"
-          trendPositive={true}
-          highlightColor="var(--accent-amber)"
-        />
-        <StatCard
-          title="Planned Adapters"
-          value={plannedCount}
-          subtitle="Hanwha, Bosch, Axis, Honeywell"
-          icon={<ClipboardList size={20} />}
-          trend="In Roadmap"
-          trendPositive={true}
-        />
-        <StatCard
-          title="Non-Fabrication"
-          value="100%"
-          subtitle="Zero unverified claims"
-          icon={<Scale size={20} />}
-          progressPercent={100}
-        />
-      </div>
+      {/* Executive Forensic Metric Ribbon */}
+      <ExecutiveMetricStrip
+        metrics={[
+          {
+            label: 'Empirically Validated',
+            value: validatedCount,
+            annotation: 'Hikvision & Dahua',
+            statusBadge: { text: 'GROUND TRUTH OK', variant: 'green' }
+          },
+          {
+            label: 'Profile Spec Ready',
+            value: profileReadyCount,
+            annotation: 'CP Plus & Uniview',
+            statusBadge: { text: 'PARSER SPEC READY', variant: 'gold' }
+          },
+          {
+            label: 'Planned Adapters',
+            value: plannedCount,
+            annotation: 'Hanwha, Bosch, Axis, Honeywell',
+            statusBadge: { text: 'IN ROADMAP', variant: 'blue' }
+          },
+          {
+            label: 'Non-Fabrication',
+            value: '100%',
+            annotation: 'Zero unverified claims',
+            statusBadge: { text: 'EMPIRICAL', variant: 'green' }
+          }
+        ]}
+      />
 
       <AlertBanner
         type="info"
@@ -122,7 +114,7 @@ export const OEMMatrixPage: React.FC = () => {
           {filteredMatrix.map((item) => (
             <tr key={item.oem}>
               <td>
-                <div style={{ fontWeight: 600, color: 'var(--palette-deep-navy)', fontSize: '13px' }}>
+                <div style={{ fontWeight: 600, color: 'var(--palette-prussian)', fontSize: '13px' }}>
                   {item.oem}
                 </div>
                 <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
@@ -143,11 +135,11 @@ export const OEMMatrixPage: React.FC = () => {
                   className="mono"
                   style={{
                     fontSize: '11px',
-                    color: item.fixture_reference ? 'var(--palette-deep-purple)' : 'var(--text-muted)',
-                    backgroundColor: item.fixture_reference ? 'var(--palette-lavender)' : 'transparent',
+                    color: item.fixture_reference ? 'var(--palette-prussian)' : 'var(--text-muted)',
+                    backgroundColor: item.fixture_reference ? 'var(--palette-prussian-tint)' : 'transparent',
                     padding: item.fixture_reference ? '2px 8px' : '0',
                     borderRadius: 'var(--radius-xs)',
-                    border: item.fixture_reference ? '1px solid rgba(82, 21, 78, 0.15)' : 'none',
+                    border: item.fixture_reference ? '1px solid var(--border-color)' : 'none',
                     fontWeight: item.fixture_reference ? 600 : 400,
                   }}
                 >

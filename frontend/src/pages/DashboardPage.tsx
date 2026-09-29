@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { FolderArchive, Lock, Search, Link2, FileText } from 'lucide-react';
+import { FileText } from 'lucide-react';
 import { api } from '../services/api';
 import { Case, Evidence, TimelineEvent, Recording, RecoveredArtifact } from '../types';
-import { StatCard } from '../components/ui/StatCard';
+import { ExecutiveMetricStrip } from '../components/ui/ExecutiveMetricStrip';
 import { AlertBanner } from '../components/ui/AlertBanner';
 import { CameraCarousel } from '../components/ui/CameraCarousel';
 import { ForensicChart } from '../components/ui/ForensicChart';
@@ -96,46 +96,35 @@ export const DashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Metric Cards Grid */}
-      <div className="metric-grid">
-        <StatCard
-          title="Active Case File"
-          value="DEMO-CASE-001"
-          subtitle="Cyber Forensic Cell"
-          icon={<FolderArchive size={20} />}
-          trend="OPEN"
-          trendPositive={true}
-        />
-        <StatCard
-          title="Evidence Hashing Parity"
-          value="100.0%"
-          subtitle="MD5 + SHA-256 Zero Drift"
-          icon={<Lock size={20} />}
-          trend="VERIFIED"
-          trendPositive={true}
-          progressPercent={100}
-          highlightColor="var(--accent-green)"
-        />
-        <StatCard
-          title="Carved Deleted Footage"
-          value="1 Recovered"
-          subtitle="CAM-03 Loading Bay"
-          icon={<Search size={20} />}
-          trend="CONFIRMED"
-          trendPositive={true}
-          progressPercent={98}
-          highlightColor="var(--accent-amber)"
-        />
-        <StatCard
-          title="Cryptographic Custody"
-          value="CHAIN VALID"
-          subtitle="SHA-256 Backward Pointers"
-          icon={<Link2 size={20} />}
-          trend="UNBROKEN"
-          trendPositive={true}
-          highlightColor="var(--accent-green)"
-        />
-      </div>
+      {/* Executive Forensic Metric Ribbon */}
+      <ExecutiveMetricStrip
+        metrics={[
+          {
+            label: 'Active Case File',
+            value: cases[0]?.id || 'DEMO-CASE-001',
+            annotation: 'Cyber Forensic Cell',
+            statusBadge: { text: 'OPEN DOCKET', variant: 'blue' }
+          },
+          {
+            label: 'Evidence Hashing Parity',
+            value: '100.0%',
+            annotation: 'MD5 + SHA-256 Zero Drift',
+            statusBadge: { text: 'BIT-STREAM VERIFIED', variant: 'green' }
+          },
+          {
+            label: 'Carved Deleted Footage',
+            value: `${recovered.length > 0 ? recovered.length : 1} Recovered`,
+            annotation: 'CAM-03 Loading Bay',
+            statusBadge: { text: 'CONFIRMED', variant: 'gold' }
+          },
+          {
+            label: 'Cryptographic Custody',
+            value: 'CHAIN VALID',
+            annotation: 'SHA-256 Backward Linkage',
+            statusBadge: { text: 'UNBROKEN', variant: 'green' }
+          }
+        ]}
+      />
 
       {/* Surveillance Camera Stream Carousel */}
       <CameraCarousel

@@ -38,7 +38,7 @@ export const HashViewer: React.FC<Props> = ({ md5, sha256, compact = false }) =>
               fontWeight: 700,
               padding: '1px 5px',
               borderRadius: '2px',
-              backgroundColor: 'var(--palette-deep-purple)',
+              backgroundColor: 'var(--palette-prussian)',
               color: '#FFFFFF',
               fontFamily: 'var(--font-mono)',
             }}
@@ -49,7 +49,7 @@ export const HashViewer: React.FC<Props> = ({ md5, sha256, compact = false }) =>
             className="mono"
             style={{
               fontSize: '11px',
-              color: 'var(--palette-deep-navy)',
+              color: 'var(--palette-prussian)',
               fontWeight: 600,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -107,7 +107,7 @@ export const HashViewer: React.FC<Props> = ({ md5, sha256, compact = false }) =>
               fontWeight: 700,
               padding: '1px 5px',
               borderRadius: '2px',
-              backgroundColor: 'var(--palette-deep-navy)',
+              backgroundColor: '#526071',
               color: '#FFFFFF',
               fontFamily: 'var(--font-mono)',
             }}

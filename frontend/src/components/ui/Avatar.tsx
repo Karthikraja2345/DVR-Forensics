@@ -32,9 +32,9 @@ export const Avatar: React.FC<Props> = ({
             width: `${sizePixels}px`,
             height: `${sizePixels}px`,
             borderRadius: '50%',
-            backgroundColor: 'var(--palette-lavender)',
-            border: '1px solid rgba(82, 21, 78, 0.2)',
-            color: 'var(--palette-deep-purple)',
+            backgroundColor: 'var(--palette-prussian-tint)',
+            border: '1px solid var(--border-color)',
+            color: 'var(--palette-prussian)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -64,7 +64,7 @@ export const Avatar: React.FC<Props> = ({
       </div>
 
       <div style={{ lineHeight: 1.2 }}>
-        <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--palette-deep-navy)' }}>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--palette-prussian)' }}>
           {name}
         </div>
         <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>

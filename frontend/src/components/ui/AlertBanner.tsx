@@ -26,28 +26,40 @@ export const AlertBanner: React.FC<Props> = ({
 
   const colorMap = {
     info: {
-      bg: 'rgba(218, 224, 242, 0.4)',
-      border: '#c7d2fe',
-      icon: <ShieldCheck size={18} color="var(--palette-deep-purple)" />,
-      accent: 'var(--palette-deep-purple)',
+      bg: '#FFFFFF',
+      border: 'var(--border-color)',
+      icon: <ShieldCheck size={18} color="var(--palette-gold)" />,
+      accent: 'var(--palette-prussian)',
+      badgeBg: 'var(--palette-gold-tint)',
+      badgeColor: '#B45309',
+      badgeBorder: 'rgba(252, 163, 17, 0.35)',
     },
     success: {
       bg: 'var(--accent-green-bg)',
       border: '#bbf7d0',
       icon: <CheckCircle2 size={18} color="var(--accent-green)" />,
       accent: 'var(--accent-green)',
+      badgeBg: '#FFFFFF',
+      badgeColor: 'var(--accent-green)',
+      badgeBorder: '#bbf7d0',
     },
     warning: {
       bg: 'var(--accent-amber-bg)',
       border: '#fde68a',
       icon: <AlertTriangle size={18} color="var(--accent-amber)" />,
       accent: 'var(--accent-amber)',
+      badgeBg: '#FFFFFF',
+      badgeColor: 'var(--accent-amber)',
+      badgeBorder: '#fde68a',
     },
     danger: {
       bg: 'var(--accent-rose-bg)',
       border: '#fecdd3',
       icon: <AlertCircle size={18} color="var(--accent-rose)" />,
       accent: 'var(--accent-rose)',
+      badgeBg: '#FFFFFF',
+      badgeColor: 'var(--accent-rose)',
+      badgeBorder: '#fecdd3',
     },
   }[type];
 
@@ -62,7 +74,7 @@ export const AlertBanner: React.FC<Props> = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: '14px',
-        marginBottom: '16px',
+        marginBottom: '20px',
         boxShadow: 'var(--shadow-sm)',
       }}
     >
@@ -70,7 +82,7 @@ export const AlertBanner: React.FC<Props> = ({
         <span style={{ display: 'flex', alignItems: 'center' }}>{colorMap.icon}</span>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontWeight: 600, color: 'var(--palette-deep-navy)', fontSize: '13px' }}>
+            <span style={{ fontWeight: 600, color: 'var(--palette-prussian)', fontSize: '13px' }}>
               {title}
             </span>
             {badge && (
@@ -80,9 +92,9 @@ export const AlertBanner: React.FC<Props> = ({
                   fontWeight: 700,
                   padding: '1px 6px',
                   borderRadius: 'var(--radius-xs)',
-                  backgroundColor: '#FFFFFF',
-                  border: `1px solid ${colorMap.border}`,
-                  color: colorMap.accent,
+                  backgroundColor: colorMap.badgeBg,
+                  border: `1px solid ${colorMap.badgeBorder}`,
+                  color: colorMap.badgeColor,
                   letterSpacing: '0.04em',
                 }}
               >
@@ -100,14 +112,11 @@ export const AlertBanner: React.FC<Props> = ({
         {actionText && onAction && (
           <button
             onClick={onAction}
+            className="btn-primary"
             style={{
-              padding: '6px 12px',
+              padding: '6px 14px',
               fontSize: '11px',
               fontWeight: 600,
-              backgroundColor: 'var(--palette-deep-purple)',
-              color: '#FFFFFF',
-              borderRadius: 'var(--radius-sm)',
-              boxShadow: '0 1px 3px rgba(82, 21, 78, 0.2)',
             }}
           >
             {actionText}
@@ -134,4 +143,3 @@ export const AlertBanner: React.FC<Props> = ({
     </div>
   );
 };
-

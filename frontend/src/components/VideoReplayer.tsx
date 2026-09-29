@@ -90,8 +90,8 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
                 fontWeight: 700,
                 padding: '3px 8px',
                 borderRadius: 'var(--radius-xs)',
-                backgroundColor: 'rgba(17, 19, 68, 0.85)',
-                border: '1px solid rgba(218, 224, 242, 0.3)',
+                backgroundColor: 'rgba(20, 33, 61, 0.9)',
+                border: '1px solid rgba(252, 163, 17, 0.4)',
                 color: '#FFFFFF',
                 fontFamily: 'var(--font-mono)',
               }}
@@ -105,9 +105,9 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
                 fontWeight: 600,
                 padding: '3px 8px',
                 borderRadius: 'var(--radius-xs)',
-                backgroundColor: 'rgba(17, 19, 68, 0.85)',
-                color: '#DAE0F2',
-                border: '1px solid rgba(218, 224, 242, 0.3)',
+                backgroundColor: 'rgba(20, 33, 61, 0.9)',
+                color: 'var(--palette-gold)',
+                border: '1px solid rgba(252, 163, 17, 0.3)',
                 fontFamily: 'var(--font-mono)',
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -128,15 +128,15 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
               textAlign: 'right',
               fontFamily: 'var(--font-mono)',
               fontSize: '11px',
-              backgroundColor: 'rgba(17, 19, 68, 0.88)',
+              backgroundColor: 'rgba(20, 33, 61, 0.92)',
               padding: '6px 12px',
               borderRadius: 'var(--radius-xs)',
-              border: '1px solid rgba(218, 224, 242, 0.25)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
               boxShadow: 'var(--shadow-card)',
             }}
           >
-            <div style={{ color: '#DAE0F2' }}>DEVICE: {current.start_time_raw}</div>
-            <div style={{ color: '#bbf7d0', fontWeight: 600, marginTop: '2px' }}>
+            <div style={{ color: '#E5E5E5' }}>DEVICE: {current.start_time_raw}</div>
+            <div style={{ color: 'var(--palette-gold)', fontWeight: 600, marginTop: '2px' }}>
               UTC: {current.start_time_utc ? new Date(current.start_time_utc).toISOString().replace('.000Z', ' UTC') : 'N/A'}
             </div>
           </div>
@@ -151,8 +151,8 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: '#0c0f1d',
-              backgroundImage: 'radial-gradient(rgba(218, 224, 242, 0.15) 1px, transparent 1px)',
+              backgroundColor: '#0c1220',
+              backgroundImage: 'radial-gradient(rgba(252, 163, 17, 0.12) 1px, transparent 1px)',
               backgroundSize: '24px 24px',
               color: '#FFFFFF',
               fontFamily: 'var(--font-mono)',
@@ -167,7 +167,7 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
                   top: 52,
                   left: 16,
                   right: 16,
-                  backgroundColor: 'rgba(254, 243, 199, 0.92)',
+                  backgroundColor: 'rgba(254, 243, 199, 0.95)',
                   border: '1px solid #fde68a',
                   borderRadius: 'var(--radius-xs)',
                   padding: '6px 12px',
@@ -229,9 +229,9 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
                   right: '20%',
                   width: '210px',
                   height: '110px',
-                  border: '2px dashed #DAE0F2',
-                  backgroundColor: 'rgba(218, 224, 242, 0.14)',
-                  boxShadow: '0 0 14px rgba(218, 224, 242, 0.3)',
+                  border: '2px dashed var(--palette-gold)',
+                  backgroundColor: 'rgba(252, 163, 17, 0.12)',
+                  boxShadow: '0 0 14px rgba(252, 163, 17, 0.3)',
                   zIndex: 10,
                   pointerEvents: 'none',
                   borderRadius: '2px',
@@ -239,8 +239,8 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
               >
                 <div
                   style={{
-                    backgroundColor: 'var(--palette-deep-purple)',
-                    color: '#FFFFFF',
+                    backgroundColor: 'var(--palette-gold)',
+                    color: '#000000',
                     fontSize: '10px',
                     fontWeight: 700,
                     padding: '2px 6px',
@@ -255,23 +255,23 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
 
             {/* Center Video Metadata Icon */}
             <div style={{ marginBottom: '12px', opacity: 0.9 }}>
-              <Video size={48} strokeWidth={1.5} color="var(--palette-lavender)" />
+              <Video size={48} strokeWidth={1.5} color="var(--palette-gold)" />
             </div>
             <div style={{ fontSize: '15px', fontWeight: 600, color: '#FFFFFF' }}>
               {current.camera_name || current.channel_id}
             </div>
-            <div style={{ fontSize: '12px', color: '#DAE0F2', marginTop: '4px' }}>
-              STREAM ID: <span style={{ color: '#F9CFF2', fontWeight: 600 }}>{current.artifact_id}</span>
+            <div style={{ fontSize: '12px', color: '#E5E5E5', marginTop: '4px' }}>
+              STREAM ID: <span style={{ color: 'var(--palette-gold)', fontWeight: 600 }}>{current.artifact_id}</span>
             </div>
             <div
               style={{
                 marginTop: '16px',
                 padding: '5px 14px',
-                background: 'rgba(17, 19, 68, 0.75)',
-                border: '1px solid rgba(218, 224, 242, 0.25)',
+                background: 'rgba(20, 33, 61, 0.85)',
+                border: '1px solid rgba(252, 163, 17, 0.3)',
                 borderRadius: 'var(--radius-xs)',
                 fontSize: '11px',
-                color: '#DAE0F2',
+                color: '#E5E5E5',
               }}
             >
               H.264 BIT-STREAM READY • 25.0 FPS • 1920x1080 • SHA-256 VERIFIED
@@ -282,7 +282,7 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
           <div
             style={{
               padding: '14px 20px',
-              backgroundColor: 'var(--bg-secondary)',
+              backgroundColor: '#FAF9F8',
               borderTop: '1px solid var(--border-color)',
             }}
           >
@@ -300,7 +300,7 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
                 onChange={(e) => setCurrentTimeSec(parseFloat(e.target.value))}
                 style={{
                   flex: 1,
-                  accentColor: 'var(--palette-deep-purple)',
+                  accentColor: 'var(--palette-gold)',
                   cursor: 'pointer',
                   height: '6px',
                 }}
@@ -355,8 +355,8 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
                         padding: '3px 8px',
                         fontSize: '11px',
                         borderRadius: 'var(--radius-xs)',
-                        backgroundColor: playbackSpeed === spd ? 'var(--palette-deep-purple)' : 'transparent',
-                        color: playbackSpeed === spd ? '#FFFFFF' : 'var(--palette-deep-navy)',
+                        backgroundColor: playbackSpeed === spd ? 'var(--palette-prussian)' : 'transparent',
+                        color: playbackSpeed === spd ? '#FFFFFF' : 'var(--palette-prussian)',
                         fontWeight: 600,
                         fontFamily: 'var(--font-mono)',
                       }}
@@ -375,9 +375,9 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
                     padding: '6px 14px',
                     fontSize: '11px',
                     borderRadius: 'var(--radius-sm)',
-                    backgroundColor: showAiOverlay ? 'var(--palette-lavender)' : '#FFFFFF',
-                    border: `1px solid ${showAiOverlay ? 'rgba(82, 21, 78, 0.25)' : 'var(--border-color)'}`,
-                    color: showAiOverlay ? 'var(--palette-deep-purple)' : 'var(--text-secondary)',
+                    backgroundColor: showAiOverlay ? 'var(--palette-gold-tint)' : '#FFFFFF',
+                    border: `1px solid ${showAiOverlay ? 'var(--palette-gold)' : 'var(--border-color)'}`,
+                    color: showAiOverlay ? '#B45309' : 'var(--text-secondary)',
                     fontWeight: 600,
                     display: 'flex',
                     alignItems: 'center',
@@ -401,14 +401,14 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
 
         {/* Right Pane: Forensic Metadata Inspector */}
         <div className="metadata-inspector">
-          <h3 style={{ fontSize: '15px', marginBottom: '16px', color: 'var(--palette-deep-navy)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Sliders size={16} style={{ color: 'var(--palette-deep-purple)' }} />
+          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', marginBottom: '16px', color: 'var(--palette-prussian)', fontWeight: 400, display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Sliders size={16} color="var(--palette-gold)" />
             Forensic Metadata Inspector
           </h3>
 
           <div className="meta-row">
             <span className="meta-label">Artifact ID</span>
-            <span className="meta-val" style={{ color: 'var(--palette-deep-purple)' }}>{current.artifact_id}</span>
+            <span className="meta-val" style={{ color: 'var(--palette-prussian)' }}>{current.artifact_id}</span>
           </div>
           <div className="meta-row">
             <span className="meta-label">Camera / Channel</span>
@@ -438,7 +438,7 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
           </div>
 
           <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--border-subtle)' }}>
-            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
               Cryptographic Signatures
             </div>
             <HashViewer md5={current.md5} sha256={current.sha256} />
@@ -449,12 +449,12 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
               style={{
                 marginTop: '16px',
                 padding: '12px',
-                background: 'var(--accent-amber-bg)',
+                background: 'var(--palette-gold-tint)',
                 borderRadius: 'var(--radius-sm)',
-                border: '1px solid #fde68a',
+                border: '1px solid rgba(252, 163, 17, 0.4)',
               }}
             >
-              <div style={{ fontSize: '11px', color: 'var(--accent-amber)', fontWeight: 600, marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '11px', color: '#B45309', fontWeight: 700, marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Search size={13} /> RECOVERY EXPLANATION DIAGNOSTICS:
               </div>
               <div style={{ fontSize: '11px', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
@@ -467,7 +467,7 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
 
       {/* Channel Selector Bar */}
       <div style={{ marginTop: '16px' }}>
-        <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           Select Stream Channel ({allClips.length} Available)
         </div>
         <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '8px' }}>
@@ -477,17 +477,17 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
               onClick={() => setSelectedIdx(idx)}
               className={`btn-secondary ${selectedIdx === idx ? 'active' : ''}`}
               style={{
-                borderColor: selectedIdx === idx ? 'var(--palette-deep-purple)' : 'var(--border-color)',
-                backgroundColor: selectedIdx === idx ? 'var(--palette-lavender)' : '#FFFFFF',
+                borderColor: selectedIdx === idx ? 'var(--palette-prussian)' : 'var(--border-color)',
+                backgroundColor: selectedIdx === idx ? 'var(--palette-prussian-tint)' : '#FFFFFF',
                 minWidth: '180px',
                 textAlign: 'left',
                 padding: '10px 14px',
                 borderRadius: 'var(--radius-sm)',
-                boxShadow: 'var(--shadow-card)',
+                boxShadow: 'var(--shadow-sm)',
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--palette-deep-navy)' }}>
+                <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--palette-prussian)' }}>
                   {c.channel_id}
                 </span>
                 <span
@@ -496,9 +496,9 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
                     fontWeight: 700,
                     padding: '1px 5px',
                     borderRadius: '2px',
-                    backgroundColor: c.isRecovered ? 'var(--accent-amber-bg)' : 'var(--accent-green-bg)',
-                    color: c.isRecovered ? 'var(--accent-amber)' : 'var(--accent-green)',
-                    border: `1px solid ${c.isRecovered ? '#fde68a' : '#bbf7d0'}`,
+                    backgroundColor: c.isRecovered ? 'var(--palette-gold-tint)' : 'var(--accent-green-bg)',
+                    color: c.isRecovered ? '#B45309' : 'var(--accent-green)',
+                    border: `1px solid ${c.isRecovered ? 'rgba(252, 163, 17, 0.4)' : '#bbf7d0'}`,
                   }}
                 >
                   {c.isRecovered ? 'CARVED' : 'ALLOCATED'}
@@ -514,4 +514,3 @@ export const VideoReplayer: React.FC<Props> = ({ recordings, recovered }) => {
     </div>
   );
 };
-

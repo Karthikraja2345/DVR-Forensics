@@ -48,7 +48,7 @@ export const Dropdown: React.FC<Props> = ({ options, value, onChange, label }) =
           backgroundColor: '#FFFFFF',
           border: '1px solid var(--border-color)',
           borderRadius: 'var(--radius-sm)',
-          color: 'var(--palette-deep-navy)',
+          color: 'var(--palette-prussian)',
           fontSize: '12px',
           fontWeight: 600,
           boxShadow: 'var(--shadow-sm)',
@@ -60,8 +60,8 @@ export const Dropdown: React.FC<Props> = ({ options, value, onChange, label }) =
             style={{
               fontSize: '10px',
               padding: '1px 6px',
-              backgroundColor: 'var(--palette-lavender)',
-              color: 'var(--palette-deep-purple)',
+              backgroundColor: 'var(--palette-prussian-tint)',
+              color: 'var(--palette-prussian)',
               borderRadius: 'var(--radius-xs)',
               fontWeight: 700,
             }}
@@ -103,7 +103,7 @@ export const Dropdown: React.FC<Props> = ({ options, value, onChange, label }) =
                 padding: '8px 12px',
                 borderRadius: 'var(--radius-xs)',
                 cursor: 'pointer',
-                backgroundColor: opt.value === value ? 'var(--palette-lavender)' : 'transparent',
+                backgroundColor: opt.value === value ? 'var(--palette-prussian-tint)' : 'transparent',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
@@ -117,7 +117,7 @@ export const Dropdown: React.FC<Props> = ({ options, value, onChange, label }) =
               }}
             >
               <div>
-                <div style={{ fontSize: '12px', fontWeight: 600, color: opt.value === value ? 'var(--palette-deep-purple)' : 'var(--palette-deep-navy)' }}>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: opt.value === value ? 'var(--palette-prussian)' : 'var(--palette-prussian)' }}>
                   {opt.label}
                 </div>
                 {opt.sub && (
@@ -127,7 +127,7 @@ export const Dropdown: React.FC<Props> = ({ options, value, onChange, label }) =
                 )}
               </div>
               {opt.value === value && (
-                <Check size={14} color="var(--palette-deep-purple)" />
+                <Check size={14} color="var(--palette-gold)" />
               )}
             </div>
           ))}

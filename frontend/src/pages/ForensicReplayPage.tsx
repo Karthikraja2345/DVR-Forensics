@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Video, Film, Clock, ShieldCheck } from 'lucide-react';
+import { Video } from 'lucide-react';
 import { api } from '../services/api';
 import { Recording, RecoveredArtifact } from '../types';
 import { VideoReplayer } from '../components/VideoReplayer';
-import { StatCard } from '../components/ui/StatCard';
+import { ExecutiveMetricStrip } from '../components/ui/ExecutiveMetricStrip';
 import { AlertBanner } from '../components/ui/AlertBanner';
 
 interface Props {
@@ -50,46 +50,40 @@ export const ForensicReplayPage: React.FC<Props> = ({ caseId }) => {
           </p>
         </div>
         <span className="case-pill">
-          <Video size={13} style={{ color: 'var(--palette-deep-purple)' }} />
+          <Video size={13} style={{ color: 'var(--palette-prussian)' }} />
           <span>{totalStreams} Evidence Feeds Online</span>
         </span>
       </div>
 
-      {/* Top StatCards */}
-      <div className="metric-grid">
-        <StatCard
-          title="Active Streams"
-          value={recordings.length}
-          subtitle="Allocated DVR partitions"
-          icon={<Video size={20} />}
-          trend="Bitstream OK"
-          trendPositive={true}
-        />
-        <StatCard
-          title="Carved Streams"
-          value={recovered.length}
-          subtitle="Unallocated sectors recovered"
-          icon={<Film size={20} />}
-          trend="H.264 Carved"
-          trendPositive={true}
-          highlightColor="var(--accent-amber)"
-        />
-        <StatCard
-          title="Clock Alignment"
-          value="±0.04s"
-          subtitle="Sub-second drift compensation"
-          icon={<Clock size={20} />}
-          trend="Synchronized"
-          trendPositive={true}
-        />
-        <StatCard
-          title="Frame Verification"
-          value="100%"
-          subtitle="Zero dropped GOP packets"
-          icon={<ShieldCheck size={20} />}
-          progressPercent={100}
-        />
-      </div>
+      {/* Executive Forensic Metric Ribbon */}
+      <ExecutiveMetricStrip
+        metrics={[
+          {
+            label: 'Active Streams',
+            value: recordings.length,
+            annotation: 'Allocated DVR partitions',
+            statusBadge: { text: 'BITSTREAM OK', variant: 'green' }
+          },
+          {
+            label: 'Carved Streams',
+            value: recovered.length,
+            annotation: 'Unallocated sectors recovered',
+            statusBadge: { text: 'H.264 CARVED', variant: 'gold' }
+          },
+          {
+            label: 'Clock Alignment',
+            value: '±0.04s',
+            annotation: 'Sub-second drift compensation',
+            statusBadge: { text: 'SYNCHRONIZED', variant: 'green' }
+          },
+          {
+            label: 'Frame Verification',
+            value: '100%',
+            annotation: 'Zero dropped GOP packets',
+            statusBadge: { text: 'PARITY VALID', variant: 'blue' }
+          }
+        ]}
+      />
 
       <AlertBanner
         type="info"

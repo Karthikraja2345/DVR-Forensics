@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ShieldCheck, FileText, Lock, Scale, Link2, Copy, Check } from 'lucide-react';
+import { Link2, Copy, Check } from 'lucide-react';
 import { api } from '../services/api';
 import { CustodyEvent } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
-import { StatCard } from '../components/ui/StatCard';
+import { ExecutiveMetricStrip } from '../components/ui/ExecutiveMetricStrip';
 import { AlertBanner } from '../components/ui/AlertBanner';
 
 interface Props {
@@ -76,41 +76,35 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
         </div>
       </div>
 
-      {/* Custody Metrics Grid */}
-      <div className="metric-grid">
-        <StatCard
-          title="Ledger Status"
-          value={isValid ? "VALID" : "COMPROMISED"}
-          subtitle="Cryptographic proof"
-          icon={<ShieldCheck size={20} />}
-          trend={isValid ? "Intact" : "Invalid"}
-          trendPositive={isValid}
-          highlightColor={isValid ? "var(--accent-green)" : "var(--accent-rose)"}
-        />
-        <StatCard
-          title="Logged Events"
-          value={events.length}
-          subtitle="Sequential audit blocks"
-          icon={<FileText size={20} />}
-          trend="Immutable"
-          trendPositive={true}
-        />
-        <StatCard
-          title="Hash Algorithm"
-          value="SHA-256"
-          subtitle="Backward linked pointers"
-          icon={<Lock size={20} />}
-          trend="Collision Safe"
-          trendPositive={true}
-        />
-        <StatCard
-          title="Non-Repudiation"
-          value="100%"
-          subtitle="ISO/IEC 27037 compliant"
-          icon={<Scale size={20} />}
-          progressPercent={100}
-        />
-      </div>
+      {/* Executive Forensic Metric Ribbon */}
+      <ExecutiveMetricStrip
+        metrics={[
+          {
+            label: 'Ledger Status',
+            value: isValid ? 'VALID' : 'COMPROMISED',
+            annotation: 'Cryptographic proof',
+            statusBadge: { text: isValid ? 'CHAIN INTACT' : 'INVALID', variant: isValid ? 'green' : 'neutral' }
+          },
+          {
+            label: 'Logged Events',
+            value: events.length,
+            annotation: 'Sequential audit blocks',
+            statusBadge: { text: 'IMMUTABLE', variant: 'blue' }
+          },
+          {
+            label: 'Hash Algorithm',
+            value: 'SHA-256',
+            annotation: 'Backward linked pointers',
+            statusBadge: { text: 'COLLISION SAFE', variant: 'green' }
+          },
+          {
+            label: 'Non-Repudiation',
+            value: '100%',
+            annotation: 'ISO/IEC 27037 compliant',
+            statusBadge: { text: 'SEC 65B READY', variant: 'gold' }
+          }
+        ]}
+      />
 
       <AlertBanner
         type={isValid ? "success" : "danger"}
@@ -135,13 +129,13 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
                 <span
                   className="mono"
                   style={{
-                    color: 'var(--palette-deep-purple)',
+                    color: 'var(--palette-prussian)',
                     fontWeight: 700,
                     fontSize: '12px',
                     padding: '2px 8px',
-                    backgroundColor: 'var(--palette-lavender)',
+                    backgroundColor: 'var(--palette-prussian-tint)',
                     borderRadius: 'var(--radius-xs)',
-                    border: '1px solid rgba(82, 21, 78, 0.15)',
+                    border: '1px solid var(--border-color)',
                   }}
                 >
                   #{ev.sequence_index.toString().padStart(3, '0')}
@@ -155,9 +149,9 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
                       fontWeight: 700,
                       padding: '2px 8px',
                       borderRadius: 'var(--radius-xs)',
-                      backgroundColor: 'var(--palette-lavender)',
-                      border: '1px solid rgba(82, 21, 78, 0.15)',
-                      color: 'var(--palette-deep-purple)',
+                      backgroundColor: 'var(--palette-prussian-tint)',
+                      border: '1px solid var(--border-color)',
+                      color: 'var(--palette-prussian)',
                     }}
                   >
                     {ev.action}
@@ -170,7 +164,7 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
                 )}
               </td>
               <td>
-                <div style={{ fontWeight: 600, color: 'var(--palette-deep-navy)', fontSize: '13px' }}>{ev.actor}</div>
+                <div style={{ fontWeight: 600, color: 'var(--palette-prussian)', fontSize: '13px' }}>{ev.actor}</div>
                 <div className="mono" style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
                   {new Date(ev.timestamp).toLocaleString()}
                 </div>
@@ -191,7 +185,7 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
                       <span style={{ fontSize: '9px', fontWeight: 700, color: 'var(--text-muted)' }}>PREV:</span>
-                      <span className="mono" style={{ fontSize: '11px', color: 'var(--palette-deep-navy)' }}>
+                      <span className="mono" style={{ fontSize: '11px', color: 'var(--palette-prussian)' }}>
                         {ev.previous_event_hash.substring(0, 16)}...
                       </span>
                     </div>
@@ -210,21 +204,21 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      backgroundColor: 'var(--palette-lavender)',
-                      border: '1px solid rgba(82, 21, 78, 0.15)',
+                      backgroundColor: 'var(--palette-prussian-tint)',
+                      border: '1px solid var(--border-color)',
                       padding: '3px 8px',
                       borderRadius: 'var(--radius-xs)',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
-                      <span style={{ fontSize: '9px', fontWeight: 700, color: 'var(--palette-deep-purple)' }}>HASH:</span>
-                      <span className="mono" style={{ fontSize: '11px', color: 'var(--palette-deep-purple)', fontWeight: 700 }}>
+                      <span style={{ fontSize: '9px', fontWeight: 700, color: 'var(--palette-prussian)' }}>HASH:</span>
+                      <span className="mono" style={{ fontSize: '11px', color: 'var(--palette-prussian)', fontWeight: 700 }}>
                         {ev.event_hash.substring(0, 16)}...
                       </span>
                     </div>
                     <button
                       onClick={() => handleCopy(ev.event_hash, `hash-${ev.id}`)}
-                      style={{ background: 'none', border: 'none', color: 'var(--palette-deep-purple)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                      style={{ background: 'none', border: 'none', color: 'var(--palette-prussian)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                       title="Copy event hash"
                     >
                       {copiedHash === `hash-${ev.id}` ? <Check size={11} color="var(--accent-green)" /> : <Copy size={11} />}

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Film, Target, HardDrive, Wrench, Search, CheckCircle2 } from 'lucide-react';
+import { Search, CheckCircle2, Wrench } from 'lucide-react';
 import { api } from '../services/api';
 import { RecoveredArtifact, Evidence } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
 import { HashViewer } from '../components/HashViewer';
-import { StatCard } from '../components/ui/StatCard';
+import { ExecutiveMetricStrip } from '../components/ui/ExecutiveMetricStrip';
 import { AlertBanner } from '../components/ui/AlertBanner';
 
 interface Props {
@@ -88,7 +88,7 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
           </p>
         </div>
         <button
-          className="btn-primary"
+          className="btn-gold"
           onClick={handleCarve}
           disabled={carving}
         >
@@ -97,41 +97,35 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
         </button>
       </div>
 
-      {/* Metric Cards Row */}
-      <div className="metric-grid">
-        <StatCard
-          title="Recovered Artifacts"
-          value={artifacts.length}
-          subtitle="Carved video streams"
-          icon={<Film size={20} />}
-          trend="+Carved"
-          trendPositive={true}
-          highlightColor="var(--accent-amber)"
-        />
-        <StatCard
-          title="Structural Confidence"
-          value={`${avgConfidence}%`}
-          subtitle="NAL header validity"
-          icon={<Target size={20} />}
-          progressPercent={avgConfidence}
-          trend={avgConfidence >= 90 ? 'High Fidelity' : 'Good'}
-          trendPositive={avgConfidence >= 90}
-        />
-        <StatCard
-          title="Carved Byte Volume"
-          value={`${(totalBytesCarved / (1024 * 1024)).toFixed(2)} MB`}
-          subtitle="From unallocated space"
-          icon={<HardDrive size={20} />}
-        />
-        <StatCard
-          title="Repaired Streams"
-          value={Object.keys(repairNotes).length}
-          subtitle="SPS/PPS GOP injected"
-          icon={<Wrench size={20} />}
-          trend="Playable"
-          trendPositive={true}
-        />
-      </div>
+      {/* Executive Forensic Metric Ribbon */}
+      <ExecutiveMetricStrip
+        metrics={[
+          {
+            label: 'Recovered Artifacts',
+            value: artifacts.length,
+            annotation: 'Carved video streams',
+            statusBadge: { text: '+CARVED', variant: 'gold' }
+          },
+          {
+            label: 'Structural Confidence',
+            value: `${avgConfidence}%`,
+            annotation: 'NAL header validity',
+            statusBadge: { text: avgConfidence >= 90 ? 'HIGH FIDELITY' : 'VALIDATED', variant: 'green' }
+          },
+          {
+            label: 'Carved Byte Volume',
+            value: `${(totalBytesCarved / (1024 * 1024)).toFixed(2)} MB`,
+            annotation: 'From unallocated space',
+            statusBadge: { text: 'UNALLOCATED', variant: 'blue' }
+          },
+          {
+            label: 'Repaired Streams',
+            value: Object.keys(repairNotes).length,
+            annotation: 'SPS/PPS GOP injected',
+            statusBadge: { text: 'PLAYABLE', variant: 'green' }
+          }
+        ]}
+      />
 
       <AlertBanner
         type="warning"
@@ -162,7 +156,7 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
             artifacts.map((art) => (
               <tr key={art.id}>
                 <td>
-                  <strong className="mono" style={{ color: 'var(--palette-deep-purple)' }}>{art.artifact_id}</strong>
+                  <strong className="mono" style={{ color: 'var(--palette-prussian)' }}>{art.artifact_id}</strong>
                   <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
                     Channel: {art.channel_id || 'CARVED'} • Method: {art.recovery_method}
                   </div>
@@ -176,7 +170,7 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
                 <td>
                   <StatusBadge status={art.recovery_status} />
                 </td>
-                <td className="mono" style={{ fontSize: '12px', color: 'var(--palette-deep-navy)' }}>
+                <td className="mono" style={{ fontSize: '12px', color: 'var(--palette-prussian)' }}>
                   Offset 0x{art.source_byte_offset.toString(16).toUpperCase()} ({art.source_byte_length.toLocaleString()} B)
                 </td>
                 <td style={{ maxWidth: '280px' }}>

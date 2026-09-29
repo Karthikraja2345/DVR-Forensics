@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { FileCode, Download, Link2, Zap, ShieldCheck, Scale } from 'lucide-react';
+import { FileCode, Download } from 'lucide-react';
 import { api } from '../services/api';
 import { LineageGraph as ILineageGraph } from '../types';
 import { LineageGraph } from '../components/LineageGraph';
-import { StatCard } from '../components/ui/StatCard';
+import { ExecutiveMetricStrip } from '../components/ui/ExecutiveMetricStrip';
 import { AlertBanner } from '../components/ui/AlertBanner';
 
 interface Props {
@@ -84,42 +84,35 @@ export const LineagePage: React.FC<Props> = ({ caseId }) => {
         </div>
       </div>
 
-      {/* Lineage Summary StatCards */}
-      <div className="metric-grid">
-        <StatCard
-          title="Lineage Nodes"
-          value={graph.total_nodes}
-          subtitle="Discrete evidence states"
-          icon={<Link2 size={20} />}
-          trend="Tracked"
-          trendPositive={true}
-        />
-        <StatCard
-          title="Transformations"
-          value={graph.total_edges}
-          subtitle="Deterministic edges"
-          icon={<Zap size={20} />}
-          trend="Acyclic"
-          trendPositive={true}
-        />
-        <StatCard
-          title="Graph Topology"
-          value="DAG Valid"
-          subtitle="Zero cyclic mutations"
-          icon={<ShieldCheck size={20} />}
-          trend="100% Strict"
-          trendPositive={true}
-          highlightColor="var(--accent-green)"
-        />
-        <StatCard
-          title="Court Admissibility"
-          value="Sec 65B"
-          subtitle="Indian Evidence Act compliance"
-          icon={<Scale size={20} />}
-          trend="Admissible"
-          trendPositive={true}
-        />
-      </div>
+      {/* Executive Forensic Metric Ribbon */}
+      <ExecutiveMetricStrip
+        metrics={[
+          {
+            label: 'Lineage Nodes',
+            value: graph.total_nodes,
+            annotation: 'Discrete evidence states',
+            statusBadge: { text: 'TRACKED', variant: 'blue' }
+          },
+          {
+            label: 'Transformations',
+            value: graph.total_edges,
+            annotation: 'Deterministic edges',
+            statusBadge: { text: 'ACYCLIC', variant: 'green' }
+          },
+          {
+            label: 'Graph Topology',
+            value: 'DAG Valid',
+            annotation: 'Zero cyclic mutations',
+            statusBadge: { text: '100% STRICT', variant: 'green' }
+          },
+          {
+            label: 'Court Admissibility',
+            value: 'Sec 65B',
+            annotation: 'IEA 1872 & BSA 2023 certified',
+            statusBadge: { text: 'ADMISSIBLE', variant: 'gold' }
+          }
+        ]}
+      />
 
       <AlertBanner
         type="info"
