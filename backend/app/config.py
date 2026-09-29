@@ -22,11 +22,9 @@ class Settings(BaseSettingsClass):
     TOOL_VERSION: str = "1.0.0-rc1"
     API_V1_STR: str = "/api/v1"
 
-    # Database
-    DATABASE_URL: str = "sqlite:///./forensics.db"
-
-    # Storage Paths
+    # Storage Paths & Database
     BASE_DIR: Path = Path(__file__).resolve().parent.parent.parent
+    DATABASE_URL: str = f"sqlite:///{(Path(__file__).resolve().parent.parent.parent / 'forensics.db').as_posix()}"
     EVIDENCE_STORAGE_PATH: Path = BASE_DIR / "evidence_cases"
     FIXTURES_PATH: Path = BASE_DIR / "forensic_fixtures"
     REPORTS_OUTPUT_PATH: Path = BASE_DIR / "reports" / "generated"

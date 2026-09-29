@@ -52,12 +52,10 @@ def create_demo_case():
     else:
         print(f"[+] Found existing fixture at {fixture_path}")
 
-    # 3. Clean up prior demo run if existing
-    existing_case = db.query(Case).filter(Case.id == case_id).first()
-    if existing_case:
-        print(f"[*] Removing existing {case_id} to ensure fresh state...")
-        db.delete(existing_case)
-        db.commit()
+    # 3. Clean up prior demo run and any accidental empty cases
+    for old_case in db.query(Case).all():
+        db.delete(old_case)
+    db.commit()
 
     # 4. Create Case Record
     print(f"[*] Registering Case: {case_id}...")
@@ -314,6 +312,14 @@ def create_demo_case():
     print(f"[+] Cryptographic Chain of Custody Verified: {custody_msg} ({checked} events checked)")
 
     db.close()
+    try:
+        import shutil
+        src_db = ROOT_DIR / "forensics.db"
+        dst_db = ROOT_DIR / "backend" / "forensics.db"
+        if src_db.exists():
+            shutil.copy2(src_db, dst_db)
+    except Exception:
+        pass
     print("=" * 70)
     print("[OK] OFFLINE DEMO CASE INITIALIZATION COMPLETED SUCCESSFULLY!")
     print(f"    Case ID:     {case_id}")

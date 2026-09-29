@@ -57,6 +57,8 @@ def trigger_deleted_recovery(evidence_id: str, db: Session = Depends(get_db)):
             db.add(artifact)
             results.append(artifact)
         else:
+            existing.repair_applied = False
+            existing.repair_log = None
             results.append(existing)
 
     evidence.status = "RECOVERY_COMPLETED"
@@ -89,6 +91,8 @@ def trigger_deleted_recovery(evidence_id: str, db: Session = Depends(get_db)):
             codec=item.codec,
             sha256=item.sha256,
             md5=item.md5,
+            repair_applied=bool(item.repair_applied),
+            repair_log=item.repair_log,
             created_at=item.created_at,
         )
         for item in results
@@ -150,10 +154,11 @@ def repair_recovered_stream(artifact_id: str, db: Session = Depends(get_db)):
     )
     LineageGraphManager.add_edge(
         db=db,
-        source_id=f"NODE-REC-{artifact.artifact_id}",
-        target_id=repaired_node_id,
+        edge_id=f"EDGE-REPAIR-{artifact.artifact_id}",
         case_id=case_id,
-        transformation_type="SPS_PPS_PARAMETER_INJECTION",
+        source_id="NODE-CARVED",
+        target_id=repaired_node_id,
+        transformation="SPS_PPS_PARAMETER_INJECTION",
     )
 
     # Log in Chain of Custody

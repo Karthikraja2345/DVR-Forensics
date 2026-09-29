@@ -25,9 +25,10 @@ export const DashboardPage: React.FC = () => {
         const cs = await api.getCases();
         setCases(cs);
         if (cs.length > 0) {
-          const ev = await api.getEvidence(cs[0].id);
+          const targetCaseId = cs.find((c) => c.id === 'DEMO-CASE-001')?.id || cs[0].id;
+          const ev = await api.getEvidence(targetCaseId);
           setEvidence(ev);
-          const tl = await api.getTimeline(cs[0].id);
+          const tl = await api.getTimeline(targetCaseId);
           setTimeline(tl.events);
 
           if (ev.length > 0) {
@@ -48,10 +49,11 @@ export const DashboardPage: React.FC = () => {
 
   const handleGenerateReport = async () => {
     if (cases.length === 0) return;
+    const targetCaseId = cases.find((c) => c.id === 'DEMO-CASE-001')?.id || cases[0].id;
     setGeneratingReport(true);
     try {
-      const res = await api.generateReport(cases[0].id);
-      window.open(`/api/v1/cases/${cases[0].id}/report/download`, '_blank');
+      const res = await api.generateReport(targetCaseId);
+      window.open(`/api/v1/cases/${targetCaseId}/report/download`, '_blank');
       alert(`Official ISO/IEC 27037 Court Report Generated!\n\nFile:\n${res.pdf_path}\n\nSHA-256 Digest:\n${res.sha256}`);
     } catch (e: any) {
       alert(`Report Generation failed: ${e.message}`);

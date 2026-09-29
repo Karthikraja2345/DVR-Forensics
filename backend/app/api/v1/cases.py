@@ -50,6 +50,8 @@ def create_case(payload: CaseCreate, db: Session = Depends(get_db)):
 @router.get("", response_model=List[CaseResponse])
 def list_cases(db: Session = Depends(get_db)):
     cases = db.query(Case).order_by(Case.created_at.desc()).all()
+    # Always keep DEMO-CASE-001 at index 0 so demo dashboards never default to an empty newly-created case
+    cases.sort(key=lambda x: (0 if x.id == "DEMO-CASE-001" else 1, -len(x.evidence_items)))
     res = []
     for c in cases:
         ev_count = len(c.evidence_items)

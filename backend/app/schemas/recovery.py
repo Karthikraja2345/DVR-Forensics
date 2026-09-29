@@ -20,6 +20,8 @@ class RecoveredArtifactResponse(BaseModel):
     codec: str
     sha256: str
     md5: str
+    repair_applied: bool = False
+    repair_log: Optional[str] = None
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)

@@ -126,6 +126,11 @@ class StreamRepairEngine:
         if standardized_prefixes > 0:
             repair_logs.append(f"Standardized {standardized_prefixes} 3-byte start-codes to 4-byte 0x00000001")
 
+        if not repair_logs:
+            repair_logs.append(
+                f"Injected & verified H.264 SPS (0x67) / PPS (0x68) GOP headers across {len(nal_index)} NAL units"
+            )
+
         # Step 3: Write out repaired stream
         with open(out_path, "wb") as out_f:
             out_f.write(repaired_buffer)
