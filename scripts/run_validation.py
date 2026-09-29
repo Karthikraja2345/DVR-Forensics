@@ -142,10 +142,10 @@ def run_benchmarks():
     # Verify unaltered chain passes
     clean_valid, _, _ = ChainOfCustodyManager.verify_chain(db, tamper_case)
 
-    # Invert 1 character in the intermediate event hash to simulate tampering
+    # Invert/modify data in intermediate event to simulate tampering
     row = db.query(CustodyEvent).filter(CustodyEvent.case_id == tamper_case, CustodyEvent.sequence_index == 2).first()
     if row:
-        row.event_hash = "f" + row.event_hash[1:]
+        row.actor = "TAMPERED_ACTOR"
         db.commit()
     tamper_detected, _, _ = ChainOfCustodyManager.verify_chain(db, tamper_case)
     tamper_pass = clean_valid and (tamper_detected is False)

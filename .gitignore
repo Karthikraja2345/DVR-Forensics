@@ -55,6 +55,7 @@ evidence_cases/*/03_working_copy/
 evidence_cases/*/05_recovered_media/
 evidence_cases/*/06_exports/
 evidence_cases/*/10_report/*.pdf
+reports/generated/
 !forensic_fixtures/**
 
 # IDE & OS

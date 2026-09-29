@@ -10,6 +10,14 @@ interface Props {
 export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
   const [cases, setCases] = useState<Case[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [newCase, setNewCase] = useState({
+    id: `CASE-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`,
+    name: '',
+    agency: 'State Police Cyber Cell',
+    investigator: 'Insp. Rajesh Kumar',
+    description: '',
+  });
 
   useEffect(() => {
     async function loadCases() {
@@ -25,29 +33,48 @@ export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
     loadCases();
   }, []);
 
+  const handleCreateCase = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCase.name) return;
+    try {
+      const created = await api.createCase(newCase);
+      setCases([...cases, created]);
+      setShowModal(false);
+      alert(`Forensic Case Registered: ${created.id}`);
+    } catch (err: any) {
+      alert(`Failed to create case: ${err.message}`);
+    }
+  };
+
   if (loading) {
-    return <div style={{ color: 'var(--text-muted)' }}>Loading case registry...</div>;
+    return <div style={{ color: 'var(--text-muted)' }}>Loading forensic case registry...</div>;
   }
 
   return (
     <div>
       <div className="page-title-row">
         <div>
-          <h1 className="page-title">Case Management</h1>
+          <h1 className="page-title">Forensic Case Registry</h1>
           <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-            Official forensic cases, investigator assignments, and evidence intake ledgers.
+            Official case ledgers, investigator chain delegations, and evidence container tracking.
           </p>
         </div>
+        <button
+          className="btn-primary"
+          onClick={() => setShowModal(true)}
+        >
+          + Register New Case
+        </button>
       </div>
 
       <table className="forensic-table">
         <thead>
           <tr>
-            <th>Case ID</th>
-            <th>Title & Description</th>
-            <th>Lead Examiner</th>
-            <th>Status</th>
-            <th>Created</th>
+            <th>Case Identifier</th>
+            <th>Investigation Title & Context</th>
+            <th>Lead Examiner & Agency</th>
+            <th>Custody Status</th>
+            <th>Date Registered</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -55,15 +82,15 @@ export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
           {cases.map((c) => (
             <tr key={c.id}>
               <td>
-                <strong className="mono" style={{ color: 'var(--accent-cyan)' }}>{c.id}</strong>
+                <strong className="mono" style={{ color: 'var(--accent-teal-bright)' }}>{c.id}</strong>
               </td>
               <td>
-                <div style={{ fontWeight: 600 }}>{c.name}</div>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{c.description}</div>
+                <div style={{ fontWeight: 600, color: 'var(--palette-white)' }}>{c.name}</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>{c.description}</div>
               </td>
               <td>
-                <div>{c.investigator}</div>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{c.agency}</div>
+                <div style={{ color: 'var(--palette-white)' }}>{c.investigator}</div>
+                <div style={{ fontSize: '11px', color: 'var(--palette-dust-grey)' }}>{c.agency}</div>
               </td>
               <td>
                 <StatusBadge status={c.status} />
@@ -74,16 +101,133 @@ export const CasesPage: React.FC<Props> = ({ onSelectCase }) => {
               <td>
                 <button
                   className="btn-secondary"
-                  style={{ fontSize: '11px', padding: '4px 10px' }}
+                  style={{ fontSize: '11px', padding: '6px 12px' }}
                   onClick={() => onSelectCase(c.id)}
                 >
-                  Select Active
+                  Set Active Case
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Create Case Modal */}
+      {showModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+            backdropFilter: 'blur(6px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: 'var(--bg-card-solid)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-md)',
+              width: '100%',
+              maxWidth: '460px',
+              padding: '24px',
+              boxShadow: 'var(--shadow-glow-yale)',
+            }}
+          >
+            <h2 style={{ fontSize: '16px', color: 'var(--palette-white)', marginBottom: '4px' }}>
+              Register Forensic Case
+            </h2>
+            <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '18px' }}>
+              Complies with ISO/IEC 27037:2012 intake requirements.
+            </p>
+
+            <form onSubmit={handleCreateCase} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div>
+                <label style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', display: 'block', marginBottom: '4px' }}>
+                  Case ID
+                </label>
+                <input
+                  type="text"
+                  value={newCase.id}
+                  disabled
+                  style={{ width: '100%', opacity: 0.7 }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', display: 'block', marginBottom: '4px' }}>
+                  Case Title
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. CCTV Tampering Investigation - Warehouse"
+                  value={newCase.name}
+                  onChange={(e) => setNewCase({ ...newCase, name: e.target.value })}
+                  style={{ width: '100%' }}
+                  required
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', display: 'block', marginBottom: '4px' }}>
+                  Investigating Agency / Unit
+                </label>
+                <input
+                  type="text"
+                  value={newCase.agency}
+                  onChange={(e) => setNewCase({ ...newCase, agency: e.target.value })}
+                  style={{ width: '100%' }}
+                  required
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', display: 'block', marginBottom: '4px' }}>
+                  Lead Examiner
+                </label>
+                <input
+                  type="text"
+                  value={newCase.investigator}
+                  onChange={(e) => setNewCase({ ...newCase, investigator: e.target.value })}
+                  style={{ width: '100%' }}
+                  required
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', display: 'block', marginBottom: '4px' }}>
+                  Brief Incident Description
+                </label>
+                <textarea
+                  rows={3}
+                  value={newCase.description}
+                  onChange={(e) => setNewCase({ ...newCase, description: e.target.value })}
+                  style={{ width: '100%', resize: 'none' }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px' }}>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn-primary"
+                >
+                  Register Case
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

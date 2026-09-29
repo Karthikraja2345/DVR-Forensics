@@ -3,6 +3,8 @@ import { api } from '../services/api';
 import { RecoveredArtifact, Evidence } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
 import { HashViewer } from '../components/HashViewer';
+import { StatCard } from '../components/ui/StatCard';
+import { AlertBanner } from '../components/ui/AlertBanner';
 
 interface Props {
   caseId: string;
@@ -69,6 +71,12 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
     return <div style={{ color: 'var(--text-muted)' }}>Scanning unallocated clusters...</div>;
   }
 
+  const avgConfidence = artifacts.length > 0
+    ? Math.round((artifacts.reduce((acc, a) => acc + a.confidence_score, 0) / artifacts.length) * 100)
+    : 0;
+
+  const totalBytesCarved = artifacts.reduce((acc, a) => acc + a.source_byte_length, 0);
+
   return (
     <div>
       <div className="page-title-row">
@@ -83,9 +91,52 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
           onClick={handleCarve}
           disabled={carving}
         >
-          {carving ? 'Carving Sectors...' : '🔍 Trigger Deep Cluster Carve'}
+          {carving ? '⏳ Carving Sectors...' : '🔍 Trigger Deep Cluster Carve'}
         </button>
       </div>
+
+      {/* Metric Cards Row */}
+      <div className="metric-grid">
+        <StatCard
+          title="Recovered Artifacts"
+          value={artifacts.length}
+          subtitle="Carved video streams"
+          icon="🎞️"
+          trend="+Carved"
+          trendPositive={true}
+          highlightColor="var(--accent-amber)"
+        />
+        <StatCard
+          title="Structural Confidence"
+          value={`${avgConfidence}%`}
+          subtitle="NAL header validity"
+          icon="🎯"
+          progressPercent={avgConfidence}
+          trend={avgConfidence >= 90 ? 'High Fidelity' : 'Good'}
+          trendPositive={avgConfidence >= 90}
+        />
+        <StatCard
+          title="Carved Byte Volume"
+          value={`${(totalBytesCarved / (1024 * 1024)).toFixed(2)} MB`}
+          subtitle="From unallocated space"
+          icon="💾"
+        />
+        <StatCard
+          title="Repaired Streams"
+          value={Object.keys(repairNotes).length}
+          subtitle="SPS/PPS GOP injected"
+          icon="🔧"
+          trend="Playable"
+          trendPositive={true}
+        />
+      </div>
+
+      <AlertBanner
+        type="warning"
+        title="Zero-Platter Contamination Standard (ISO/IEC 27037)"
+        badge="READ-ONLY CARVING"
+        message="Recovery operates exclusively on write-blocked bitstream replicas. Missing GOP headers (SPS 0x67 / PPS 0x68) are synthesized non-destructively."
+      />
 
       <table className="forensic-table">
         <thead>
@@ -99,50 +150,59 @@ export const RecoveryWorkspacePage: React.FC<Props> = ({ caseId }) => {
           </tr>
         </thead>
         <tbody>
-          {artifacts.map((art) => (
-            <tr key={art.id}>
-              <td>
-                <strong className="mono" style={{ color: 'var(--accent-cyan)' }}>{art.artifact_id}</strong>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                  Channel: {art.channel_id || 'CARVED'} • Method: {art.recovery_method}
-                </div>
-                {repairNotes[art.artifact_id] && (
-                  <div style={{ fontSize: '10px', color: 'var(--accent-green)', marginTop: '4px' }}>
-                    ✓ {repairNotes[art.artifact_id]}
-                  </div>
-                )}
-              </td>
-              <td>
-                <StatusBadge status={art.recovery_status} />
-              </td>
-              <td className="mono" style={{ fontSize: '12px' }}>
-                Offset 0x{art.source_byte_offset.toString(16).toUpperCase()} ({art.source_byte_length.toLocaleString()} B)
-              </td>
-              <td style={{ maxWidth: '280px' }}>
-                <div style={{ fontWeight: 600, color: 'var(--accent-green)', fontSize: '12px' }}>
-                  {Math.round(art.confidence_score * 100)}% Structural Confidence
-                </div>
-                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                  {art.explanation_rules?.rationale}
-                </div>
-              </td>
-              <td>
-                <HashViewer md5={art.md5} sha256={art.sha256} />
-              </td>
-              <td>
-                <button
-                  className="btn-secondary"
-                  style={{ fontSize: '11px', padding: '6px 10px', whiteSpace: 'nowrap' }}
-                  onClick={() => handleRepair(art.artifact_id)}
-                  disabled={repairingId === art.artifact_id}
-                >
-                  {repairingId === art.artifact_id ? 'Repairing...' : '🔧 Repair Stream'}
-                </button>
+          {artifacts.length === 0 ? (
+            <tr>
+              <td colSpan={6} style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)' }}>
+                No carved artifacts yet. Click "Trigger Deep Cluster Carve" to inspect unallocated disk sectors.
               </td>
             </tr>
-          ))}
+          ) : (
+            artifacts.map((art) => (
+              <tr key={art.id}>
+                <td>
+                  <strong className="mono" style={{ color: 'var(--accent-teal-bright)' }}>{art.artifact_id}</strong>
+                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                    Channel: {art.channel_id || 'CARVED'} • Method: {art.recovery_method}
+                  </div>
+                  {repairNotes[art.artifact_id] && (
+                    <div style={{ fontSize: '11px', color: 'var(--accent-green)', marginTop: '4px', fontWeight: 600 }}>
+                      ✓ {repairNotes[art.artifact_id]}
+                    </div>
+                  )}
+                </td>
+                <td>
+                  <StatusBadge status={art.recovery_status} />
+                </td>
+                <td className="mono" style={{ fontSize: '12px' }}>
+                  Offset 0x{art.source_byte_offset.toString(16).toUpperCase()} ({art.source_byte_length.toLocaleString()} B)
+                </td>
+                <td style={{ maxWidth: '280px' }}>
+                  <div style={{ fontWeight: 600, color: 'var(--accent-green)', fontSize: '12px' }}>
+                    {Math.round(art.confidence_score * 100)}% Structural Confidence
+                  </div>
+                  <div style={{ fontSize: '11px', color: 'var(--palette-dust-grey)', marginTop: '4px', lineHeight: 1.4 }}>
+                    {art.explanation_rules?.rationale}
+                  </div>
+                </td>
+                <td>
+                  <HashViewer md5={art.md5} sha256={art.sha256} />
+                </td>
+                <td>
+                  <button
+                    className="btn-secondary"
+                    style={{ fontSize: '11px', padding: '6px 12px', whiteSpace: 'nowrap' }}
+                    onClick={() => handleRepair(art.artifact_id)}
+                    disabled={repairingId === art.artifact_id}
+                  >
+                    {repairingId === art.artifact_id ? '⏳ Repairing...' : '🔧 Repair Stream'}
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>
   );
 };
+

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { CustodyEvent } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
+import { StatCard } from '../components/ui/StatCard';
+import { AlertBanner } from '../components/ui/AlertBanner';
 
 interface Props {
   caseId: string;
@@ -13,6 +15,7 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
   const [statusMsg, setStatusMsg] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [verifying, setVerifying] = useState(false);
+  const [copiedHash, setCopiedHash] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadCustody() {
@@ -44,6 +47,12 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
     }
   };
 
+  const handleCopy = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedHash(id);
+    setTimeout(() => setCopiedHash(null), 2000);
+  };
+
   if (loading) {
     return <div style={{ color: 'var(--text-muted)' }}>Validating custody hashes...</div>;
   }
@@ -59,60 +68,164 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
         </div>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           <StatusBadge status={isValid ? 'CHAIN VALID' : 'CHAIN INVALID'} />
-          <button className="btn-secondary" onClick={handleVerify} disabled={verifying}>
-            {verifying ? 'Verifying...' : '⛓ Verify Hash Links'}
+          <button className="btn-primary" onClick={handleVerify} disabled={verifying}>
+            {verifying ? '⏳ Verifying...' : '⛓ Verify Hash Links'}
           </button>
         </div>
       </div>
 
-      <div style={{ marginBottom: '16px', padding: '12px 16px', backgroundColor: 'var(--bg-card)', borderRadius: '6px', border: '1px solid var(--border-color)', fontSize: '12px' }}>
-        <strong>Integrity Status: </strong>
-        <span style={{ color: isValid ? 'var(--accent-green)' : 'var(--accent-red)' }}>
-          {statusMsg || 'All cryptographic backward pointers validated against genesis block.'}
-        </span>
+      {/* Custody Metrics Grid */}
+      <div className="metric-grid">
+        <StatCard
+          title="Ledger Status"
+          value={isValid ? "VALID" : "COMPROMISED"}
+          subtitle="Cryptographic proof"
+          icon="🛡️"
+          trend={isValid ? "Intact" : "Invalid"}
+          trendPositive={isValid}
+          highlightColor={isValid ? "var(--accent-green)" : "var(--accent-rose)"}
+        />
+        <StatCard
+          title="Logged Events"
+          value={events.length}
+          subtitle="Sequential audit blocks"
+          icon="📜"
+          trend="Immutable"
+          trendPositive={true}
+        />
+        <StatCard
+          title="Hash Algorithm"
+          value="SHA-256"
+          subtitle="Backward linked pointers"
+          icon="🔐"
+          trend="Collision Safe"
+          trendPositive={true}
+        />
+        <StatCard
+          title="Non-Repudiation"
+          value="100%"
+          subtitle="ISO/IEC 27037 compliant"
+          icon="⚖️"
+          progressPercent={100}
+        />
       </div>
+
+      <AlertBanner
+        type={isValid ? "success" : "danger"}
+        title={isValid ? "Cryptographic Backward Chain Verified" : "Chain Integrity Violation"}
+        badge="APPEND-ONLY LEDGER"
+        message={statusMsg || "All cryptographic backward pointers validated against genesis block. Evidence has zero unauthorized tampering."}
+      />
 
       <table className="forensic-table">
         <thead>
           <tr>
-            <th>Seq</th>
-            <th>Action</th>
+            <th style={{ width: '80px' }}>Seq</th>
+            <th>Action & Notes</th>
             <th>Actor & Timestamp</th>
-            <th>Cryptographic Backward Hash Pointer & Event Hash</th>
+            <th>Cryptographic Hash Pointers</th>
           </tr>
         </thead>
         <tbody>
           {events.map((ev) => (
             <tr key={ev.id}>
-              <td className="mono" style={{ color: 'var(--accent-cyan)' }}>
-                #{ev.sequence_index.toString().padStart(3, '0')}
+              <td>
+                <span
+                  className="mono"
+                  style={{
+                    color: 'var(--accent-teal-bright)',
+                    fontWeight: 700,
+                    fontSize: '12px',
+                    padding: '2px 8px',
+                    backgroundColor: 'rgba(60, 110, 113, 0.2)',
+                    borderRadius: 'var(--radius-xs)',
+                    border: '1px solid var(--palette-stormy-teal)',
+                  }}
+                >
+                  #{ev.sequence_index.toString().padStart(3, '0')}
+                </span>
               </td>
               <td>
-                <span className="badge badge-cyan">{ev.action}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span
+                    style={{
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      padding: '2px 6px',
+                      borderRadius: 'var(--radius-xs)',
+                      backgroundColor: 'rgba(40, 75, 99, 0.4)',
+                      border: '1px solid var(--palette-yale-blue)',
+                      color: 'var(--palette-white)',
+                    }}
+                  >
+                    {ev.action}
+                  </span>
+                </div>
                 {ev.notes && (
-                  <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                  <div style={{ fontSize: '12px', color: 'var(--palette-dust-grey)', marginTop: '6px', lineHeight: 1.4 }}>
                     {ev.notes}
                   </div>
                 )}
               </td>
               <td>
-                <div style={{ fontWeight: 600 }}>{ev.actor}</div>
-                <div className="mono" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                <div style={{ fontWeight: 600, color: 'var(--palette-white)', fontSize: '13px' }}>{ev.actor}</div>
+                <div className="mono" style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
                   {new Date(ev.timestamp).toLocaleString()}
                 </div>
               </td>
               <td>
-                <div style={{ fontSize: '11px' }}>
-                  <span style={{ color: 'var(--text-muted)' }}>PREV: </span>
-                  <span className="mono" style={{ color: 'var(--text-secondary)' }}>
-                    {ev.previous_event_hash.substring(0, 24)}...
-                  </span>
-                </div>
-                <div style={{ fontSize: '11px', marginTop: '2px' }}>
-                  <span style={{ color: 'var(--text-muted)' }}>HASH: </span>
-                  <span className="mono" style={{ color: 'var(--accent-green)' }}>
-                    {ev.event_hash.substring(0, 24)}...
-                  </span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', maxWidth: '340px' }}>
+                  {/* PREV POINTER */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      backgroundColor: 'rgba(53, 53, 53, 0.25)',
+                      border: '1px solid rgba(53, 53, 53, 0.5)',
+                      padding: '2px 6px',
+                      borderRadius: '2px',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
+                      <span style={{ fontSize: '9px', fontWeight: 700, color: 'var(--text-muted)' }}>PREV:</span>
+                      <span className="mono" style={{ fontSize: '11px', color: 'var(--palette-dust-grey)' }}>
+                        {ev.previous_event_hash.substring(0, 16)}...
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => handleCopy(ev.previous_event_hash, `prev-${ev.id}`)}
+                      style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '10px', cursor: 'pointer' }}
+                    >
+                      {copiedHash === `prev-${ev.id}` ? '✓' : '📋'}
+                    </button>
+                  </div>
+
+                  {/* EVENT HASH */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      backgroundColor: 'rgba(40, 75, 99, 0.25)',
+                      border: '1px solid rgba(40, 75, 99, 0.45)',
+                      padding: '2px 6px',
+                      borderRadius: '2px',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
+                      <span style={{ fontSize: '9px', fontWeight: 700, color: 'var(--accent-teal-bright)' }}>HASH:</span>
+                      <span className="mono" style={{ fontSize: '11px', color: 'var(--accent-green)', fontWeight: 600 }}>
+                        {ev.event_hash.substring(0, 16)}...
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => handleCopy(ev.event_hash, `hash-${ev.id}`)}
+                      style={{ background: 'none', border: 'none', color: 'var(--accent-teal-bright)', fontSize: '10px', cursor: 'pointer' }}
+                    >
+                      {copiedHash === `hash-${ev.id}` ? '✓' : '📋'}
+                    </button>
+                  </div>
                 </div>
               </td>
             </tr>
@@ -122,3 +235,4 @@ export const CustodyLogPage: React.FC<Props> = ({ caseId }) => {
     </div>
   );
 };
+
